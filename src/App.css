@@ -1,5 +1,12 @@
+html{
+  background-color: #3c4453;
+  color: rgb(219, 230, 245);
+}
+
 .App {
   text-align: center;
+  background-color: #3c4453;
+  color: rgb(219, 230, 245);
 }
 
 .App-logo {
@@ -36,3 +43,12 @@
     transform: rotate(360deg);
   }
 }
+
+/* Dice container */
+.container{
+  text-align: center;
+  padding: 2rem;
+  margin: 1rem;
+}
+
+/* Bakunawa transition */
