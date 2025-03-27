@@ -1,5 +1,5 @@
 import './App.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 // Import images and sound effects
 import BakunawaRoller from "./DiceImg/BakunawaRoller.png";
@@ -18,9 +18,8 @@ function App() {
   const SkinImgs = [BakunawaRoller, BakunawaRollerG, BakunawaRollerR];
 
   // State variables for managing app behavior
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState([]); // Stores current dice images
   const [isRolling, setIsRolling] = useState(false);
-  const [hasMoved, setHasMoved] = useState(false);
   const [isDiceVisible, setIsDiceVisible] = useState(false);
   const [animationKey, setAnimationKey] = useState(0);
   const [currentSkinIndex, setCurrentSkinIndex] = useState(0);
@@ -29,29 +28,25 @@ function App() {
   const [diceCount, setDiceCount] = useState(1);
 
   // Handles dice rolling animation and results
-  const rollDice = () => {
-    setIsRolling(false);
-    setTimeout(() => {
-      setIsRolling(true);
-      setAnimationKey((prevKey) => prevKey + 1); // Update key to force image rerender
-    }, 50);
-
-    setHasMoved(true);
+  const rollDice = (count = diceCount) => {
+    setIsRolling(true);
     setIsDiceVisible(true);
+    setAnimationKey((prevKey) => prevKey + 1); // Force rerender
 
+    // Play dice roll sound
     const audio = new Audio(DiceSFX);
-    audio.play(); // Play dice roll sound
+    audio.play();
 
     let counter = 0;
     const rollInterval = setInterval(() => {
       // Randomly select dice images
-      const newImages = Array.from({ length: diceCount }, () => DiceImgs[Math.floor(Math.random() * 5)]);
-      setImages(newImages);
+      const newImages = Array.from({ length: count }, () => DiceImgs[Math.floor(Math.random() * 5)]);
+      setImages(newImages); // Update displayed dice
       counter++;
-      if (counter >= 6) {
+      if (counter >= 3) {
         clearInterval(rollInterval);
         // Final dice result
-        const finalImages = Array.from({ length: diceCount }, () => DiceImgs[Math.floor(Math.random() * 5)]);
+        const finalImages = Array.from({ length: count }, () => DiceImgs[Math.floor(Math.random() * 5)]);
         setImages(finalImages);
         setIsRolling(false);
       }
@@ -67,6 +62,36 @@ function App() {
   // Adjust dice count within limits (1-10)
   const increaseDiceCount = () => setDiceCount((prev) => Math.min(prev + 1, 10));
   const decreaseDiceCount = () => setDiceCount((prev) => Math.max(prev - 1, 1));
+
+  // Shaking feature for mobile devices
+  useEffect(() => {
+    let lastX = 0, lastY = 0, lastZ = 0, lastTime = 0;
+    const SHAKE_THRESHOLD = 10; // Sensitivity of shake, feel free to adjust!
+
+    const handleMotion = (event) => {
+      if (!event.accelerationIncludingGravity) return;
+
+      const { x, y, z } = event.accelerationIncludingGravity;
+      const currentTime = Date.now();
+      const timeDiff = currentTime - lastTime;
+
+      if (timeDiff > 200) { // Limit event firing
+        const speed = Math.abs(x - lastX) + Math.abs(y - lastY) + Math.abs(z - lastZ);
+        if (speed > SHAKE_THRESHOLD) {
+          rollDice(diceCount); // Ensure correct dice count
+        }
+        lastX = x;
+        lastY = y;
+        lastZ = z;
+        lastTime = currentTime;
+      }
+    };
+
+    window.addEventListener("devicemotion", handleMotion);
+    return () => {
+      window.removeEventListener("devicemotion", handleMotion);
+    };
+  }, [diceCount]); // Ensure it always uses the latest diceCount
 
   return (
     <div className="App">
@@ -99,12 +124,12 @@ function App() {
       )}
 
       {/* Header Text */}
-      <h3 style={{ color: 'white'}}>This is a dice prototype! Test it out!</h3>
+      <h3 style={{ color: 'white' }}>This is a dice prototype! Test it out!</h3>
       <h5 style={{ color: 'white' }}>Click on the Bakunawa to roll the dice!</h5>
 
       {/* Bakunawa Roller Section */}
-      <div className={`image-container${isRolling || hasMoved ? ' rolling' : ''}`}>
-        <button className={`bakunawa-button${isRolling ? ' rolling active' : ''}`} onClick={rollDice} disabled={isRolling}>
+      <div className={`image-container${isRolling ? ' rolling' : ''}`}>
+        <button className={`bakunawa-button${isRolling ? ' rolling active' : ''}`} onClick={() => rollDice(diceCount)} disabled={isRolling}>
           <img key={animationKey} src={SkinImgs[currentSkinIndex]} alt="Bakunawa Roller" className="bakunawa" />
         </button>
 
