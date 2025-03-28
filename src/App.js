@@ -11,27 +11,36 @@ import Dice_3 from "./DiceImg/Dice_3.png";
 import Dice_4 from "./DiceImg/Dice_4.png";
 import Dice_5 from "./DiceImg/Dice_5.png";
 import DiceSFX from "./DiceImg/dicesfx.mp3";
+import D6_one from "./DiceImg/D6_one.png";
+import D6_two from "./DiceImg/D6_two.png";
+import D6_three from "./DiceImg/D6_three.png";
+import D6_four from "./DiceImg/D6_four.png";
+import D6_five from "./DiceImg/D6_five.png";
+import D6_six from "./DiceImg/D6_six.png";
 
 function App() {
-  // Store dice and skin images in arrays
+  // Store dice and skin images in arrays for easy access
   const DiceImgs = [Dice_1, Dice_2, Dice_3, Dice_4, Dice_5];
+  const D6Imgs = [D6_one, D6_two, D6_three, D6_four, D6_five, D6_six];
   const SkinImgs = [BakunawaRoller, BakunawaRollerG, BakunawaRollerR];
 
-  // State variables for managing app behavior
-  const [images, setImages] = useState([]); // Stores current dice images
+  // State variables to manage dice images, animations, and UI visibility
+  const [d5Images, setD5Images] = useState([]);
+  const [d6Images, setD6Images] = useState([]);
   const [isRolling, setIsRolling] = useState(false);
   const [isDiceVisible, setIsDiceVisible] = useState(false);
   const [animationKey, setAnimationKey] = useState(0);
   const [currentSkinIndex, setCurrentSkinIndex] = useState(0);
   const [showMenu, setShowMenu] = useState(false);
   const [showDiceSettings, setShowDiceSettings] = useState(false);
-  const [diceCount, setDiceCount] = useState(1);
+  const [d5Count, setD5Count] = useState(1);
+  const [d6Count, setD6Count] = useState(1);
 
-  // Handles dice rolling animation and results
-  const rollDice = (count = diceCount) => {
+  // Handles the dice rolling logic and animations
+  const rollDice = () => {
     setIsRolling(true);
     setIsDiceVisible(true);
-    setAnimationKey((prevKey) => prevKey + 1); // Force rerender
+    setAnimationKey((prevKey) => prevKey + 1);
 
     // Play dice roll sound
     const audio = new Audio(DiceSFX);
@@ -39,59 +48,30 @@ function App() {
 
     let counter = 0;
     const rollInterval = setInterval(() => {
-      // Randomly select dice images
-      const newImages = Array.from({ length: count }, () => DiceImgs[Math.floor(Math.random() * 5)]);
-      setImages(newImages); // Update displayed dice
+      // Randomly select images for D5 and D6 dice
+      const newD5Images = Array.from({ length: d5Count }, () => DiceImgs[Math.floor(Math.random() * 5)]);
+      const newD6Images = Array.from({ length: d6Count }, () => D6Imgs[Math.floor(Math.random() * 6)]);
+      setD5Images(newD5Images);
+      setD6Images(newD6Images);
       counter++;
+
+      // After 3 repeats, show the result
       if (counter >= 3) {
         clearInterval(rollInterval);
-        // Final dice result
-        const finalImages = Array.from({ length: count }, () => DiceImgs[Math.floor(Math.random() * 5)]);
-        setImages(finalImages);
+        const finalD5Images = Array.from({ length: d5Count }, () => DiceImgs[Math.floor(Math.random() * 5)]);
+        const finalD6Images = Array.from({ length: d6Count }, () => D6Imgs[Math.floor(Math.random() * 6)]);
+        setD5Images(finalD5Images);
+        setD6Images(finalD6Images);
         setIsRolling(false);
       }
     }, 200);
   };
 
-  // Change Bakunawa skin based on selection
+  // Function to change the Bakunawa skin
   const changeSkin = (index) => {
     setCurrentSkinIndex(index);
     setShowMenu(false);
   };
-
-  // Adjust dice count within limits (1-10)
-  const increaseDiceCount = () => setDiceCount((prev) => Math.min(prev + 1, 10));
-  const decreaseDiceCount = () => setDiceCount((prev) => Math.max(prev - 1, 1));
-
-  // Shaking feature for mobile devices
-  useEffect(() => {
-    let lastX = 0, lastY = 0, lastZ = 0, lastTime = 0;
-    const SHAKE_THRESHOLD = 10; // Sensitivity of shake, feel free to adjust!
-
-    const handleMotion = (event) => {
-      if (!event.accelerationIncludingGravity) return;
-
-      const { x, y, z } = event.accelerationIncludingGravity;
-      const currentTime = Date.now();
-      const timeDiff = currentTime - lastTime;
-
-      if (timeDiff > 200) { // Limit event firing
-        const speed = Math.abs(x - lastX) + Math.abs(y - lastY) + Math.abs(z - lastZ);
-        if (speed > SHAKE_THRESHOLD) {
-          rollDice(diceCount); // Ensure correct dice count
-        }
-        lastX = x;
-        lastY = y;
-        lastZ = z;
-        lastTime = currentTime;
-      }
-    };
-
-    window.addEventListener("devicemotion", handleMotion);
-    return () => {
-      window.removeEventListener("devicemotion", handleMotion);
-    };
-  }, [diceCount]); // Ensure it always uses the latest diceCount
 
   return (
     <div className="App">
@@ -106,7 +86,7 @@ function App() {
           <h2>Select a Bakunawa Skin</h2>
           <div className="skin-options">
             {SkinImgs.map((skin, index) => (
-              <img key={index} src={skin} alt={`Skin ${index + 1}`} onClick={() => changeSkin(index)} />
+              <img key={index} src={skin} alt={`Skin ${index + 1}`} onClick={() => changeSkin(index)} style={{ width: '80px', height: '80px' }} />
             ))}
           </div>
         </div>
@@ -116,10 +96,15 @@ function App() {
       {showDiceSettings && (
         <div className="menu-overlay right">
           <button className="close-btn" onClick={() => setShowDiceSettings(false)}>Close</button>
-          <h2>D5</h2>
-          <button onClick={decreaseDiceCount}>-</button>
-          {diceCount}
-          <button onClick={increaseDiceCount}>+</button>
+          <h2>D5 Count</h2>
+          <button className="adjust-btn" onClick={() => setD5Count((prev) => Math.max(prev - 1, 0))}>-</button>
+          <span className="count-display">{d5Count}</span>
+          <button className="adjust-btn" onClick={() => setD5Count((prev) => Math.min(prev + 1, 10))}>+</button>
+
+          <h2>D6 Count</h2>
+          <button className="adjust-btn" onClick={() => setD6Count((prev) => Math.max(prev - 1, 0))}>-</button>
+          <span className="count-display">{d6Count}</span>
+          <button className="adjust-btn" onClick={() => setD6Count((prev) => Math.min(prev + 1, 10))}>+</button>
         </div>
       )}
 
@@ -127,17 +112,20 @@ function App() {
       <h3 style={{ color: 'white' }}>This is a dice prototype! Test it out!</h3>
       <h5 style={{ color: 'white' }}>Click on the Bakunawa to roll the dice!</h5>
 
-      {/* Bakunawa Roller Section */}
+      {/* Dice Roller Section */}
       <div className={`image-container${isRolling ? ' rolling' : ''}`}>
-        <button className={`bakunawa-button${isRolling ? ' rolling active' : ''}`} onClick={() => rollDice(diceCount)} disabled={isRolling}>
+        <button className={`bakunawa-button${isRolling ? ' rolling active' : ''}`} onClick={rollDice} disabled={isRolling}>
           <img key={animationKey} src={SkinImgs[currentSkinIndex]} alt="Bakunawa Roller" className="bakunawa" />
         </button>
 
-        {/* Display Dice Results */}
-        {isDiceVisible && images.length > 0 && (
+        {/* Display Results of the Dice Roll */}
+        {isDiceVisible && (
           <div className="dice-container">
-            {images.map((img, index) => (
-              <img key={`${animationKey}-${index}`} src={img} alt="Dice Result" className={`dice${isRolling ? ' rolling-dice' : ''}`} />
+            {d5Images.map((img, index) => (
+              <img key={`d5-${animationKey}-${index}`} src={img} alt="D5 Result" className="dice" />
+            ))}
+            {d6Images.map((img, index) => (
+              <img key={`d6-${animationKey}-${index}`} src={img} alt="D6 Result" className="dice d6-dice" />
             ))}
           </div>
         )}

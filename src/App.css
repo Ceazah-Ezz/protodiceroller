@@ -4,9 +4,7 @@ body, html {
   overflow: hidden; /* Prevents scroll bar from popping up */
 }
 
-h1, h3 {
-  margin-bottom: 100px;
-}
+
 
 .App {
   background-color: #001f3f;
