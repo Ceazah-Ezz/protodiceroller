@@ -4,8 +4,6 @@ body, html {
   overflow: hidden; /* Prevents scroll bar from popping up */
 }
 
-
-
 .App {
   background-color: #001f3f;
   min-height: 100vh;
@@ -73,7 +71,7 @@ body, html {
 }
 
 .bakunawa-button:hover .bakunawa {
-  filter: brightness(1.1);
+  filter: brightness(1.2);
 }
 
 .bakunawa-button:disabled {
@@ -88,17 +86,78 @@ body, html {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  color: white;
+  background: none;
 }
 
 .menu-button {
-  background-color: orange;
+  top: 30px;
   left: 20px;
+  position: absolute;
+  color: white;
+  width: 150px;
+  height: 50px;
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: none;
+  background-size: contain;
+}
+
+.menu-button span { /* Ensures that text is in the button */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  pointer-events: none; /* Prevents clicking the text instead of the button */
+}
+
+.menu-button:hover{
+  filter: brightness(1.1);
+}
+
+.menu-button img {
+  width: 100%; /* Make the image fit */
+  height: auto;
+  display: block;
 }
 
 .dice-settings {
-  background-color: blue;
+  top: 30px;
   right: 20px;
+  position: absolute;
+  color: white;
+  width: 150px;
+  height: 50px;
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: none;
+  background-size: contain;
+}
+
+.dice-settings span { /* Ensures that text is in the button */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  pointer-events: none; /* Prevents clicking the text instead of the button */
+}
+
+.dice-settings:hover{
+  filter: brightness(1.1);
+}
+
+.dice-settings img {
+  width: 100%; /* Make the image fit */
+  height: auto;
 }
 
 .menu-overlay {
@@ -110,12 +169,13 @@ body, html {
   background-color: #333;
   color: white;
   padding: 20px;
+  box-sizing: border-box;
 }
 
 .menu-overlay.right {
   left: auto;
   right: 0;
-  background-color: #222;
+  background-color: #333;
 }
 
 .menu-overlay img {
@@ -123,12 +183,65 @@ body, html {
   cursor: pointer;
 }
 
+.adjust-btn {
+  color: #333;
+  background: white;
+  border: none; 
+  font-size: 25px;
+  font-weight: bold;
+  transition: filter 0.2s;
+}
+
+.adjust-btn:hover{
+  filter: brightness(1.5);
+}
+
+.count-display { /* CSS for number */
+  font-size: 20px; 
+  font-weight: bold;
+  margin: 0 10px;
+}
+
+.coin-style{
+  color: #333;
+  background: white;
+  border: none;
+  font-size: 23px;
+  font-weight: bold;
+  transition: filter 0.2s;
+}
+
+.coin-style:hover{
+  filter: brightness(1.5);
+}
+
 .close-btn {
-  background-color: red;
+  top: 50px; /* Move away from the top edge */
+  right: 20px; /* Move away from the right edge */
   color: white;
-  padding: 10px;
-  margin-bottom: 20px;
-  cursor: pointer;
+  width: 100px; 
+  height: 50px;
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: none;
+  border: none;
+  background-size: contain;
+  cursor: pointer; /* Ensure the close button is clickable */
+  z-index: 1; /* Keep it above the other content */
+}
+
+.close-btn span { /* Ensures that text is in the button */
+  position: absolute;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  pointer-events: none; /* Prevents clicking the text itself */
+}
+
+.close-btn:hover{
+  filter: brightness(1.1);
 }
 
 .dice-container {
@@ -140,4 +253,9 @@ body, html {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+.skin-options .img{
+  width: 100%;
+  height: 100%;
 }
