@@ -207,13 +207,17 @@ function App() {
         </button>
         {/* Display Dice Results */}
         {isDiceVisible && (
+          <div>
           <div className="dice-container">
             {d6Images.map((img, index) => (
               <img key={`d6-${animationKey}-${index}`} src={img} alt="D6 Result" className="dice d6-dice" />
             ))}
+            </div>
+            <div className="dice-container">
             {d20Images.map((img, index) => (
               <img key={`d20-${animationKey}-${index}`} src={img} alt="D20 Result" className="dice d20-dice" />
             ))}
+          </div>
           </div>
         )}
       </div>
