@@ -257,10 +257,11 @@ body, html {
 
 .dice-container {
   display: flex;
-  gap: 10px;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
+  gap: 10px;
+  max-width: 500px; /* Optional: Limits width for wrapping */
+  margin: 0 auto;
 }
 
 .skin-options {
