@@ -1,8 +1,7 @@
 import './App.css';
 import { useState, useEffect } from 'react';
 
-// Import media in the folder. Ensure proper file names when adding!
-
+// Import media in the DiceImg folder. Ensure proper file names when adding!
 import BakunawaRoller from "./DiceImg/BakunawaRoller.png"; // Roller Skins
 import BakunawaRollerG from "./DiceImg/BakunawaRollerG.png";
 import BakunawaRollerR from "./DiceImg/BakunawaRollerR.png";
@@ -13,7 +12,7 @@ import Button_Y from "./DiceImg/Button_Y.png"; // Button Colors
 import Button_B from "./DiceImg/Button_B.png";
 import Button_R from "./DiceImg/Button_R.png";
 
-import DiceSFX from "./DiceImg/dicesfx.mp3"; // Sfx
+import DiceSFX from "./DiceImg/dicesfx.mp3"; //Dice Sfx
 
 import D6_one from "./DiceImg/D6_one.png"; // D6 Images
 import D6_two from "./DiceImg/D6_two.png";
@@ -66,11 +65,14 @@ function App() {
   const [d6Count, setD6Count] = useState(1);
   const [d20Count, setD20Count] = useState(1);
   const [coinCount, setCoinCount] = useState(1); // Coin flip count
+  const [showSkin, setShowSkin] = useState(true); // Controls visibility of Bakunawa/Roller image
+  const [isCoinFlipping, setIsCoinFlipping] = useState(false); // Separate animation for coin flip
+
 
   // Shaking feature for mobile devices. Please test if coin flip works here
   useEffect(() => {
     let lastX = 0, lastY = 0, lastZ = 0, lastTime = 0;
-    const SHAKE_THRESHOLD = 3;
+    const SHAKE_THRESHOLD = 5; //SENSITIVITY FOR SHAKE
 
     const handleMotion = (event) => {
       if (!event.accelerationIncludingGravity) return;
@@ -99,42 +101,43 @@ function App() {
 
   // Handles dice rolling animation and sound effects
   const rollDice = () => {
-    setIsRolling(true);
-    setIsDiceVisible(true);
+    setIsRolling(true); // Activate animation
+    setIsDiceVisible(true); // Clear previous result
     setAnimationKey((prevKey) => prevKey + 1);
 
     const diceAudio = new Audio(DiceSFX);
     diceAudio.play();
 
-    let counter = 0;
+    let counter = 0; //amount of image switches
     const rollInterval = setInterval(() => {
       setD6Images(Array.from({ length: d6Count }, () => D6Imgs[Math.floor(Math.random() * 6)]));
       setD20Images(Array.from({ length: d20Count }, () => D20Imgs[Math.floor(Math.random() * 20)]));
       counter++;
-      if (counter >= 10) {
+      if (counter >= 10) { //amount of image switches max before displaying the result
         clearInterval(rollInterval);
         setIsRolling(false);
       }
-    }, 100);
+    }, 100); //delay in milliseconds
   };
 
-  // Handles coin flipping animation and result
+  // COIN FLIP FUNCTION
   const flipCoin = () => {
-    setIsRolling(true); // Activate animation
-    setCoinImages([]); // Clear previous coin result
+    setIsCoinFlipping(true);
+    setCoinImages([]);
     const coinAudio = new Audio(coinSFX);
     coinAudio.play();
-
+  
     let counter = 0;
     const flipInterval = setInterval(() => {
-      setCoinImages(Array.from({ length: coinCount }, () => CoinImgs[Math.floor(Math.random() * 2)])); // Randomly pick Coin1 or Coin2
+      setCoinImages(Array.from({ length: coinCount }, () => CoinImgs[Math.floor(Math.random() * 2)]));
       counter++;
       if (counter >= 10) {
         clearInterval(flipInterval);
-        setIsRolling(false); // Stop the animation
+        setIsCoinFlipping(false); //uses this so it doesnt play the bakunawa animation by accident
       }
-    }, 100);
+    }, 100); //delay in milliseconds
   };
+  
 
   return (
     <div className="App">
@@ -142,26 +145,30 @@ function App() {
         <img src={Button_Y}/>
           <span>Skins</span>
         </button>
+        {/* Button for Dice */}
       <button className="dice-settings" onClick={() => setShowDiceSettings(true)}><img src={Button_B}/>
           <span>Dices & Etc.</span>
       </button>
 
-      {/* Skin Selection Menu */}
-      {showMenu && (
-        <div className="menu-overlay">
-          <button className="close-btn" onClick={() => setShowMenu(false)}>
-            <img src={Button_R} />
-            <span>Close</span>
-          </button>
-          <br></br>
-          <h2>Select a Bakunawa Skin</h2>
-          <div className="skin-options">
-            {SkinImgs.map((skin, index) => (
-              <img key={index} src={skin} alt={`Skin ${index + 1}`} onClick={() => setCurrentSkinIndex(index)} style={{ width: '115px', height: '150px' }} />
-            ))}
-          </div>
-        </div> 
-      )}
+       {/* Skin Selection Menu */}
+{showMenu && (
+  <div className="menu-overlay">
+    <button className="close-btn" onClick={() => setShowMenu(false)}>
+      <img src={Button_R} />
+      <span>Close</span>
+    </button>
+    <button className="hide-btn" onClick={() => setShowSkin(!showSkin)}>
+      <span>{showSkin ? 'Hide Skin' : 'Show Skin'}</span>
+    </button>
+    <h2>Select a Bakunawa Skin</h2>
+    <div className="skin-options">
+      {SkinImgs.map((skin, index) => (
+        <img key={index} src={skin} alt={`Skin ${index + 1}`} onClick={() => setCurrentSkinIndex(index)} style={{ width: '115px', height: '150px' }} />
+      ))}
+    </div>
+  </div>
+)}
+
 
       {/* Dice Settings Menu */}
       {showDiceSettings && (
@@ -200,11 +207,21 @@ function App() {
       <h3 style={{ color: 'white' }}>This is a dice prototype! Test it out!</h3>
       <h5 style={{ color: 'white' }}>Click on the Bakunawa to roll the dice!</h5>
 
+      {/* Center Roll Button */}
+      <div style={{ marginBottom: '20px' }}>
+        <button className="center-roll-btn" onClick={rollDice} disabled={isRolling}>
+          Roll Dice
+        </button>
+      </div>
+
       {/* Dice Roller Section */}
       <div className={`image-container${isRolling ? ' rolling' : ''}`}>
-        <button className={`bakunawa-button${isRolling ? ' rolling active' : ''}`} onClick={rollDice} disabled={isRolling}>
-          <img key={animationKey} src={SkinImgs[currentSkinIndex]} alt="Bakunawa Roller" className="bakunawa" />
-        </button>
+  {showSkin && (
+    <button className={`bakunawa-button${isRolling ? ' rolling active' : ''}`} onClick={rollDice} disabled={isRolling}>
+      <img key={animationKey} src={SkinImgs[currentSkinIndex]} alt="Bakunawa Roller" className="bakunawa" />
+    </button>
+  )}
+
         {/* Display Dice Results */}
         {isDiceVisible && (
           <div className="dice-container">
