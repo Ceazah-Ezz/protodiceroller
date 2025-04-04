@@ -258,6 +258,9 @@ body, html {
 .dice-container {
   display: flex;
   gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 }
 
 .skin-options {
@@ -293,4 +296,60 @@ body, html {
   border-radius: 10px;
   margin-top: 20px;
   cursor: pointer;
+}
+
+/* --- Mobile Styles --- */
+@media (max-width: 768px) { /* Adjust breakpoint as needed */
+  .App {
+      padding: 20px;
+  }
+
+  .image-container {
+      margin-top: 20px;
+  }
+
+  .bakunawa-button .bakunawa {
+      width: 250px;
+  }
+
+  .dice {
+      width: 80px; 
+  }
+
+  .menu-button, .dice-settings {
+      top: 10px; 
+      padding: 8px;
+      font-size: 0.9em; 
+  }
+
+  .menu-overlay {
+      width: 80%;
+      padding: 15px;
+  }
+
+  .menu-overlay.right { 
+      width: 80%; 
+  }
+
+  .menu-overlay img {
+      width: 100px; 
+  }
+
+  .close-btn {
+      padding: 8px; 
+      margin-bottom: 15px;
+  }
+
+  .dice-container {
+      flex-direction: row;
+      align-items: center; 
+  }
+}
+
+/* --- Even smaller mobile screens if needed --- */
+@media (max-width: 480px) {
+  .bakunawa-button .bakunawa {
+      width: 200px;
+  }
+
 }
