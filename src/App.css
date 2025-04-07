@@ -299,6 +299,33 @@ body, html {
   cursor: pointer;
 }
 
+.stats-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: white;
+  color: black;
+  border-radius: 12px;
+  padding: 10px 20px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  z-index: 10;
+}
+
+.menu-overlay.bottom-right {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  padding: 20px;
+  z-index: 9;
+  color: black;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
 /* --- Mobile Styles --- */
 @media (max-width: 768px) { /* Adjust breakpoint as needed */
   .App {
