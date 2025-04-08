@@ -80,15 +80,18 @@ function App() {
 
   useEffect(() => {
     let lastX = 0, lastY = 0, lastZ = 0, lastTime = 0;
-    const SHAKE_THRESHOLD = 5;
-
+    const SHAKE_THRESHOLD = 40; // Adjust this value to change sensitivity
+  
     const handleMotion = (event) => {
       if (!event.accelerationIncludingGravity) return;
-
+  
       const { x, y, z } = event.accelerationIncludingGravity;
       const currentTime = Date.now();
       const timeDiff = currentTime - lastTime;
-
+  
+      // Prevent multiple rolls while one is already in progress
+      if (isRolling || timeDiff < 200) return;
+  
       if (timeDiff > 200) {
         const speed = Math.abs(x - lastX) + Math.abs(y - lastY) + Math.abs(z - lastZ);
         if (speed > SHAKE_THRESHOLD) {
@@ -100,12 +103,12 @@ function App() {
         lastTime = currentTime;
       }
     };
-
+  
     window.addEventListener("devicemotion", handleMotion);
     return () => {
       window.removeEventListener("devicemotion", handleMotion);
     };
-  }, [d6Count, d20Count]);
+  }, [isRolling, d6Count, d20Count]);
 
   const rollDice = () => {
     setIsRolling(true);
