@@ -1,18 +1,24 @@
 import './App.css';
 import { useState, useEffect } from 'react';
 
+//Rollers
 import BakunawaRoller from "./DiceImg/BakunawaRoller.png";
 import BakunawaRollerG from "./DiceImg/BakunawaRollerG.png";
 import BakunawaRollerR from "./DiceImg/BakunawaRollerR.png";
 import CastleRoller from "./DiceImg/CastleRoller.png";
 import BakunawiJr from "./DiceImg/BakunawiJr.png";
 
+//Button Designs
 import Button_Y from "./DiceImg/Button_Y.png";
 import Button_B from "./DiceImg/Button_B.png";
 import Button_R from "./DiceImg/Button_R.png";
 
+//DiceSFX
 import DiceSFX from "./DiceImg/dicesfx.mp3";
+import takeDice from "./DiceImg/takeDice.MP3";
+import putDice from "./DiceImg/putDice.MP3";
 
+//D6 Images
 import D6_one from "./DiceImg/D6_one.png";
 import D6_two from "./DiceImg/D6_two.png";
 import D6_three from "./DiceImg/D6_three.png";
@@ -20,6 +26,7 @@ import D6_four from "./DiceImg/D6_four.png";
 import D6_five from "./DiceImg/D6_five.png";
 import D6_six from "./DiceImg/D6_six.png";
 
+//D20 Images
 import D20_1 from "./DiceImg/d20_1.png";
 import D20_2 from "./DiceImg/d20_2.png";
 import D20_3 from "./DiceImg/d20_3.png";
@@ -41,9 +48,12 @@ import D20_18 from "./DiceImg/d20_18.png";
 import D20_19 from "./DiceImg/d20_19.png";
 import D20_20 from "./DiceImg/d20_20.png";
 
+//Coin Assets
 import Coin1 from "./DiceImg/Coin1.png";
 import Coin2 from "./DiceImg/Coin2.png";
 import coinSFX from "./DiceImg/coinSFX.wav";
+import takeCoin from "./DiceImg/takeCoin.MP3";
+import putCoin from "./DiceImg/putCoin.MP3";
 
 function App() {
   const SkinImgs = [BakunawaRoller, BakunawaRollerG, BakunawaRollerR, CastleRoller, BakunawiJr];
@@ -61,11 +71,12 @@ function App() {
   const [showMenu, setShowMenu] = useState(false);
   const [showDiceSettings, setShowDiceSettings] = useState(false);
   const [d6Count, setD6Count] = useState(1);
-  const [d20Count, setD20Count] = useState(1);
-  const [coinCount, setCoinCount] = useState(1);
+  const [d20Count, setD20Count] = useState(0);
+  const [coinCount, setCoinCount] = useState(0);
   const [showSkin, setShowSkin] = useState(false);
-  const [isCoinFlipping, setIsCoinFlipping] = useState(false);
   const [statsVisible, setStatsVisible] = useState(false);
+
+  
 
   const [stats, setStats] = useState({
     nat20: 0,
@@ -110,94 +121,127 @@ function App() {
     };
   }, [isRolling, d6Count, d20Count]);
 
+   // Play sound when dice or coin count changes
+   const playSound = (sound) => {
+    const audio = new Audio(sound);
+    audio.playbackRate = 0.9 + Math.random() * 0.1;
+    audio.play();
+  };
+
+  const handleD6CountChange = (change) => {
+    if (change < 0 && d6Count > 0) {
+      playSound(takeDice); // Play takeDice sound when D6 count is decreased
+    } else if (change > 0 && totalDice < 10) {
+      playSound(putDice); // Play putDice sound when D6 count is increased
+    }
+    setD6Count((prev) => Math.max(prev + change, 0)); // Ensure count does not go below 0
+  };
+
+  const handleD20CountChange = (change) => {
+    if (change < 0 && d20Count > 0) {
+      playSound(takeDice); // Play takeDice sound when D20 count is decreased
+    } else if (change > 0 && totalDice < 10) {
+      playSound(putDice); // Play putDice sound when D20 count is increased
+    }
+    setD20Count((prev) => Math.max(prev + change, 0)); // Ensure count does not go below 0
+  };
+
+  const handleCoinCountChange = (change) => {
+    if (change < 0 && coinCount > 0) {
+      playSound(takeCoin); // Play takeCoin sound when coin count is decreased
+    } else if (change > 0 && totalDice < 10) {
+      playSound(putCoin); // Play putCoin sound when coin count is increased
+    }
+    setCoinCount((prev) => Math.max(prev + change, 0)); // Ensure count does not go below 0
+  };
+  
+   // Effect to update dice images immediately when their counts change
+   useEffect(() => {
+    const spawnDice = () => {
+      const d6Results = Array.from({ length: d6Count }, () => Math.floor(Math.random() * 6));
+      const d20Results = Array.from({ length: d20Count }, () => Math.floor(Math.random() * 20));
+      const coinResults = Array.from({ length: coinCount }, () => Math.floor(Math.random() * 2));
+
+      setD6Images(d6Results.map(i => D6Imgs[i]));
+      setD20Images(d20Results.map(i => D20Imgs[i]));
+      setCoinImages(coinResults.map(i => CoinImgs[i]));
+    };
+
+    spawnDice();
+  }, [d6Count, d20Count, coinCount]);
+
   const rollDice = () => {
     setIsRolling(true);
     setIsDiceVisible(true);
     setAnimationKey(prevKey => prevKey + 1);
-
-    const diceAudio = new Audio(DiceSFX);
-    diceAudio.playbackRate = 0.9 + Math.random() * 0.2;
-    diceAudio.play();
-
+  
+    // Play dice SFX only if there are dice
+    if (d6Count > 0 || d20Count > 0) {
+      const diceAudio = new Audio(DiceSFX);
+      diceAudio.playbackRate = 0.7 + Math.random() * 0.3;
+      diceAudio.play();
+    }
+  
+    // Play coin SFX only if there are coins
+    if (coinCount > 0) {
+      const coinAudio = new Audio(coinSFX);
+      coinAudio.playbackRate = 0.7 + Math.random() * 0.3;
+      coinAudio.play();
+    }
+  
     let counter = 0;
+    let finalCoinResults = [];
+  
     const rollInterval = setInterval(() => {
       const d6Results = Array.from({ length: d6Count }, () => Math.floor(Math.random() * 6));
       const d20Results = Array.from({ length: d20Count }, () => Math.floor(Math.random() * 20));
-
-      // Update images
+      const coinResults = Array.from({ length: coinCount }, () => Math.floor(Math.random() * 2));
+  
       setD6Images(d6Results.map(i => D6Imgs[i]));
       setD20Images(d20Results.map(i => D20Imgs[i]));
-
+      setCoinImages(coinResults.map(i => CoinImgs[i]));
+      finalCoinResults = coinResults;
+  
       // Track results and unlocks
-      if (counter === 9) {//1 below the real number, as arrays start from 0
+      if (counter === 9) { //1 below the real number, as arrays start from 0
         let newStats = { ...stats };
         let newUnlocked = [...unlockedSkins];
-
+  
         d20Results.forEach((val) => {
-          if (val === 19) { 
+          if (val === 19) {
             newStats.nat20 += 1;
-            if (newUnlocked[3] === false){
+            if (newUnlocked[3] === false) {
               alert("Woah, you rolled a 20!. You are now the king of the Castle! Castle Roller added to Skins.")
             }
-            newUnlocked[3] = true; // Unlock CastleRoller
+            newUnlocked[3] = true;
           }
           if (val === 0) {
             newStats.nat1 += 1;
-            if (newUnlocked[4] === false){
+            if (newUnlocked[4] === false) {
               alert("Aww, you rolled a 1. Have Bakunawi Jr as a consolation. Added to Skins.")
             }
-            newUnlocked[4] = true; // Unlock BakunawiJr
+            newUnlocked[4] = true;
           }
         });
-
+  
         d6Results.forEach((val) => {
           if (val === 0) newStats.d6nat6 += 1;
           if (val === 5) newStats.d6nat1 += 1;
         });
-
+  
+        finalCoinResults.forEach((res) => {
+          if (res === 0) newStats.heads += 1;
+          if (res === 1) newStats.tails += 1;
+        });
+  
         setStats(newStats);
         setUnlockedSkins(newUnlocked);
       }
-
+  
       counter++;
       if (counter >= 10) {
         clearInterval(rollInterval);
         setIsRolling(false);
-      }
-    }, 100);
-  };
-
-  const flipCoin = () => {
-    setIsCoinFlipping(true);
-    setCoinImages([]); // Clear previous coin images
-    const coinAudio = new Audio(coinSFX);
-    coinAudio.playbackRate = 0.9 + Math.random() * 0.2;
-    coinAudio.play();
-  
-    let counter = 0;
-    let finalResults = []; // To store the final coin flip results
-    const flipInterval = setInterval(() => {
-      const results = Array.from({ length: coinCount }, () => Math.floor(Math.random() * 2)); // 0 = heads, 1 = tails
-      finalResults = results; // Keep track of the latest results
-  
-      setCoinImages(results.map(i => CoinImgs[i])); // Update coin images during the flip
-  
-      counter++;
-      if (counter >= 10) { // Stop the coin flip after 10 intervals
-        clearInterval(flipInterval);
-        setIsCoinFlipping(false);
-        setIsDiceVisible(true);
-        setAnimationKey(prev => prev + 1);
-  
-        // Update the statistics with the final results
-        finalResults.forEach((res) => {
-          if (res === 0) {
-            setStats(prev => ({ ...prev, heads: prev.heads + 1 }));
-          }
-          if (res === 1) {
-            setStats(prev => ({ ...prev, tails: prev.tails + 1 }));
-          }
-        });
       }
     }, 100);
   };
@@ -245,11 +289,20 @@ function App() {
           <button className="hide-btn" onClick={() => setShowSkin(!showSkin)}>
             <span>{showSkin ? 'Hide Skin' : 'Show Skin'}</span>
           </button>
-          <h2>Select a Bakunawa Skin</h2>
+          <h2>Select a Roller Skin</h2>
           <div className="skin-options">
             {SkinImgs.map((skin, index) =>
               unlockedSkins[index] ? (
-                <img key={index} src={skin} alt={`Skin ${index + 1}`} onClick={() => setCurrentSkinIndex(index)} style={{ width: '115px', height: '150px' }} />
+                <img
+                  key={index}
+                  src={skin}
+                  alt={`Skin ${index + 1}`}
+                  onClick={() => {
+                    setCurrentSkinIndex(index);
+                    setShowSkin(true);
+                  }}
+                  style={{ width: '115px', height: '150px' }}
+                />
               ) : null
             )}
           </div>
@@ -265,28 +318,25 @@ function App() {
           </button>
           <br />
           <h2>D6 Count</h2>
-          <button className="adjust-btn" onClick={() => setD6Count((prev) => Math.max(prev - 1, 0))}>-</button>
+          <button className="adjust-btn" onClick={() => handleD6CountChange(-1)}>-</button>
           <span className="count-display">{d6Count}</span>
-          <button className="adjust-btn" onClick={() => totalDice < 10 && setD6Count((prev) => prev + 1)}>+</button>
+          <button className="adjust-btn" onClick={() => handleD6CountChange(1)}>+</button>
 
           <h2>D20 Count</h2>
-          <button className="adjust-btn" onClick={() => setD20Count((prev) => Math.max(prev - 1, 0))}>-</button>
+          <button className="adjust-btn" onClick={() => handleD20CountChange(-1)}>-</button>
           <span className="count-display">{d20Count}</span>
-          <button className="adjust-btn" onClick={() => totalDice < 10 && setD20Count((prev) => prev + 1)}>+</button>
+          <button className="adjust-btn" onClick={() => handleD20CountChange(1)}>+</button>
 
           <h2>Coin Flip Count</h2>
-          <button className="adjust-btn" onClick={() => setCoinCount((prev) => Math.max(prev - 1, 0))}>-</button>
+          <button className="adjust-btn" onClick={() => handleCoinCountChange(-1)}>-</button>
           <span className="count-display">{coinCount}</span>
-          <button className="adjust-btn" onClick={() => totalDice < 10 && setCoinCount((prev) => prev + 1)}>+</button>
-
-          <h2>Flip Coin</h2>
-          <button className="coin-style" onClick={flipCoin}>Flip Coin</button>
+          <button className="adjust-btn" onClick={() => handleCoinCountChange(1)}>+</button>
         </div>
       )}
 
       {/* Instructions */}
       <h3 style={{ color: 'white' }}>This is a dice prototype! Test it out!</h3>
-      <h5 style={{ color: 'white' }}>Click on the Bakunawa to roll the dice!</h5>
+      <h5 style={{ color: 'white' }}>Click on the Button or Skin to roll the dice!</h5>
 
       <div style={{ marginBottom: '20px' }}>
         <button className="center-roll-btn" onClick={rollDice} disabled={isRolling}>

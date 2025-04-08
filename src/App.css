@@ -58,6 +58,21 @@ body, html {
   100% { transform: translateY(0); }
 }
 
+@keyframes spawnDice {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 .rolling .dice {
   animation: diceRoll 0.6s ease-in-out;
 }
