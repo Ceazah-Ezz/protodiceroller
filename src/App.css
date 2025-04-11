@@ -42,7 +42,8 @@ body, html {
 
 @keyframes bounceUp {
   0% { transform: translateY(0); }
-  50% { transform: translateY(-50px); }
+  20% { transform: translateY(-80px); }
+  65% { transform: translateY(3px); }
   100% { transform: translateY(0); }
 }
 
@@ -52,7 +53,7 @@ body, html {
 
 @keyframes diceRoll {
   0% { transform: translateY(0); }
-  30% { transform: translateY(-150px); }
+  10% { transform: translateY(-100px); }
   50% { transform: translateY(0); }
   70% { transform: translateY(-20px); }
   100% { transform: translateY(0); }
@@ -194,7 +195,13 @@ body, html {
   color: white;
   padding: 20px;
   box-sizing: border-box;
+  transform: translateX(-100%); /* For transition/slide animation */
+  transition: transform 0.2s ease-in-out;
   overflow: auto;
+}
+
+.menu-overlay.show {
+  transform: translateX(0);
 }
 
 .menu-overlay.right {
@@ -202,6 +209,11 @@ body, html {
   right: 0;
   background-color: #333;
   overflow: auto;
+  transform: translateX(100%); /* For transition/slide animation */
+}
+
+.menu-overlay.right.show {
+  transform: translateX(0);
 }
 
 .menu-overlay img {
@@ -291,16 +303,17 @@ body, html {
 }
 
 .center-roll-btn {
-  background-color: #f707ff;
+  background: none;
   border: none;
-  padding: 10px 20px;
+  padding: 20px 20px;
   font-size: 18px;
   border-radius: 12px;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  transition: transform 0.3s ease, filter 0.3s ease;
 }
+
 .center-roll-btn:hover {
-  transform: scale(1.05);
+  transform: scale(1.05); 
 }
 
 .hide-btn {
@@ -329,7 +342,7 @@ body, html {
   z-index: 10;
 }
 
-.menu-overlay.bottom-right {
+.menu-overlay.stats {
   position: fixed;
   bottom: 80px;
   right: 20px;
@@ -339,6 +352,12 @@ body, html {
   z-index: 9;
   color: black;
   box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  transition: translateX(100%); /* For transition/slide animation */
+  transition: transform 0.2s ease-in-out;
+}
+
+.menu-overlay.stats.show {
+  transform: translateX(0);
 }
 
 /* --- Mobile Styles --- */

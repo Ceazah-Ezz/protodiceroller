@@ -12,6 +12,7 @@ import BakunawiJr from "./DiceImg/BakunawiJr.png";
 import Button_Y from "./DiceImg/Button_Y.png";
 import Button_B from "./DiceImg/Button_B.png";
 import Button_R from "./DiceImg/Button_R.png";
+import DiceButton from "./DiceImg/DiceButton.png";
 
 //DiceSFX
 import DiceSFX from "./DiceImg/dicesfx.mp3";
@@ -265,25 +266,22 @@ function App() {
       </button>
 
       {/* Stats Button */}
-      <button style={{ position: 'fixed', bottom: '20px', right: '20px', backgroundColor: 'white', borderRadius: '10px', padding: '10px' }} onClick={() => setStatsVisible(!statsVisible)}>
+      <button className="stats-button" onClick={() => setStatsVisible(!statsVisible)}>
         Statistics
       </button>
 
-      {statsVisible && (
-        <div className="menu-overlay stats">
-          <h2>Statistics</h2>
-          <p>D20 Nat20s: {stats.nat20}</p>
-          <p>D20 Nat1s: {stats.nat1}</p>
-          <p>D6 Nat6s: {stats.d6nat6}</p>
-          <p>D6 Nat1s: {stats.d6nat1}</p>
-          <p>Coin Heads: {stats.heads}</p>
-          <p>Coin Tails: {stats.tails}</p>
-        </div>
-      )}
+      <div className={`menu-overlay stats ${statsVisible ? 'show' : ''}`}>
+        <h2>Statistics</h2>
+        <p>D20 Nat20s: {stats.nat20}</p>
+        <p>D20 Nat1s: {stats.nat1}</p>
+        <p>D6 Nat6s: {stats.d6nat6}</p>
+        <p>D6 Nat1s: {stats.d6nat1}</p>
+        <p>Coin Heads: {stats.heads}</p>
+        <p>Coin Tails: {stats.tails}</p>
+      </div>
 
       {/* Skin Selection */}
-      {showMenu && (
-        <div className="menu-overlay">
+      <div className={`menu-overlay ${showMenu ? 'show' : ''}`}>
           <button className="close-btn" onClick={() => setShowMenu(false)}>
             <img src={Button_R} alt="Close" />
             <span>Close</span>
@@ -309,11 +307,9 @@ function App() {
             )}
           </div>
         </div>
-      )}
 
       {/* Dice Settings Panel */}
-      {showDiceSettings && (
-        <div className="menu-overlay right">
+      <div className={`menu-overlay right ${showDiceSettings ? 'show' : ''}`}>
           <button className="close-btn" onClick={() => setShowDiceSettings(false)}>
             <img src={Button_R} alt="Close" />
             <span>Close</span>
@@ -341,7 +337,6 @@ function App() {
             </button> 
           </div>
         </div>
-       )}
 
       {/* Instructions */}
       <h3 style={{ color: 'white' }}>This is a dice prototype! Test it out!</h3>
@@ -350,7 +345,7 @@ function App() {
 
       <div style={{ marginBottom: '20px' }}>
         <button className="center-roll-btn" onClick={rollDice} disabled={isRolling}>
-          Roll Dice
+          <img src={DiceButton} alt="DiceButton" style={{width: '100px', height: '100px'}}/>
         </button>
       </div>
 
