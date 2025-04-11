@@ -75,6 +75,7 @@ function App() {
   const [coinCount, setCoinCount] = useState(0);
   const [showSkin, setShowSkin] = useState(false);
   const [statsVisible, setStatsVisible] = useState(false);
+  const [shakeEnabled, setShakeEnabled] = useState(true); // State to manage shake functionality
 
   
 
@@ -102,6 +103,7 @@ function App() {
   
       // Prevent multiple rolls while one is already in progress
       if (isRolling || timeDiff < 200) return;
+      if (!shakeEnabled) return; // Check if shake is enabled
   
       if (timeDiff > 200) {
         const speed = Math.abs(x - lastX) + Math.abs(y - lastY) + Math.abs(z - lastZ);
@@ -119,7 +121,7 @@ function App() {
     return () => {
       window.removeEventListener("devicemotion", handleMotion);
     };
-  }, [isRolling, d6Count, d20Count]);
+  }, [isRolling, d6Count, d20Count, shakeEnabled]);
 
    // Play sound when dice or coin count changes
    const playSound = (sound) => {
@@ -331,12 +333,20 @@ function App() {
           <button className="adjust-btn" onClick={() => handleCoinCountChange(-1)}>-</button>
           <span className="count-display">{coinCount}</span>
           <button className="adjust-btn" onClick={() => handleCoinCountChange(1)}>+</button>
+          
+          <div style ={{ marginTop: '20px' }}>
+            <h2> Shake to Roll </h2>
+            <button onClick={() => setShakeEnabled(!shakeEnabled)}>
+              {shakeEnabled ? 'Disable Shake' : 'Enable Shake'}
+            </button> 
+          </div>
         </div>
-      )}
+       )}
 
       {/* Instructions */}
       <h3 style={{ color: 'white' }}>This is a dice prototype! Test it out!</h3>
       <h5 style={{ color: 'white' }}>Click on the Button or Skin to roll the dice!</h5>
+      <h5 style={{ color: 'white' }}>If you are on Mobile you can also shake to roll the dice!</h5>
 
       <div style={{ marginBottom: '20px' }}>
         <button className="center-roll-btn" onClick={rollDice} disabled={isRolling}>

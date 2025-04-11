@@ -344,11 +344,13 @@ body, html {
 /* --- Mobile Styles --- */
 @media (max-width: 768px) { /* Adjust breakpoint as needed */
   .App {
-      padding: 20px;
+      padding: 15px;
+      padding-top: 100px;
+      position: absolute;
   }
 
   .image-container {
-      margin-top: 20px;
+      margin-top: 15px;
   }
 
   .bakunawa-button .bakunawa {
@@ -360,18 +362,16 @@ body, html {
   }
 
   .menu-button, .dice-settings {
-      top: 10px; 
-      padding: 8px;
-      font-size: 0.9em; 
+      padding: 7px;
+      font-size: 0.9em;
   }
 
   .menu-overlay {
-      width: 80%;
-      padding: 15px;
+      width: 60%;
   }
 
   .menu-overlay.right { 
-      width: 80%; 
+      width: 60%; 
   }
 
   .menu-overlay img {
@@ -379,14 +379,15 @@ body, html {
   }
 
   .close-btn {
-      padding: 8px; 
-      margin-bottom: 15px;
+      padding: 2px; 
+      margin-bottom: 10px;
   }
 
   .dice-container {
       flex-direction: row;
       align-items: center; 
   }
+  
 }
 
 /* --- Even smaller mobile screens if needed --- */
