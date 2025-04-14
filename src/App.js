@@ -1,6 +1,7 @@
 import './App.css';
 import { useState, useEffect } from 'react';
 
+import DiceTray from "./DiceImg/DiceTray.png";
 //Rollers
 import BakunawaRoller from "./DiceImg/BakunawaRoller.png";
 import BakunawaRollerG from "./DiceImg/BakunawaRollerG.png";
@@ -26,6 +27,7 @@ import D6_three from "./DiceImg/D6_three.png";
 import D6_four from "./DiceImg/D6_four.png";
 import D6_five from "./DiceImg/D6_five.png";
 import D6_six from "./DiceImg/D6_six.png";
+import D6_corner from "./DiceImg/D6_corner.png";
 
 //D20 Images
 import D20_1 from "./DiceImg/d20_1.png";
@@ -48,11 +50,13 @@ import D20_17 from "./DiceImg/d20_17.png";
 import D20_18 from "./DiceImg/d20_18.png";
 import D20_19 from "./DiceImg/d20_19.png";
 import D20_20 from "./DiceImg/d20_20.png";
+import D20_corner from "./DiceImg/d20_corner.png";
 
 //Coin Assets
 import Coin1 from "./DiceImg/Coin1.png";
 import Coin2 from "./DiceImg/Coin2.png";
-import coinSFX from "./DiceImg/coinSFX.wav";
+import CoinMid from "./DiceImg/CoinMid.png";
+import coinSFX from "./DiceImg/coinSFX.MP3";
 import takeCoin from "./DiceImg/takeCoin.MP3";
 import putCoin from "./DiceImg/putCoin.MP3";
 
@@ -77,6 +81,7 @@ function App() {
   const [showSkin, setShowSkin] = useState(false);
   const [statsVisible, setStatsVisible] = useState(false);
   const [shakeEnabled, setShakeEnabled] = useState(true); // State to manage shake functionality
+  const totalDice = d6Count + d20Count + coinCount;
 
   
 
@@ -133,30 +138,36 @@ function App() {
 
   const handleD6CountChange = (change) => {
     if (change < 0 && d6Count > 0) {
-      playSound(takeDice); // Play takeDice sound when D6 count is decreased
+      playSound(takeDice);
+      setD6Count(prev => Math.max(prev + change, 0));
     } else if (change > 0 && totalDice < 10) {
-      playSound(putDice); // Play putDice sound when D6 count is increased
+      playSound(putDice);
+      setD6Count(prev => prev + 1);
     }
-    setD6Count((prev) => Math.max(prev + change, 0)); // Ensure count does not go below 0
   };
+  
 
   const handleD20CountChange = (change) => {
     if (change < 0 && d20Count > 0) {
-      playSound(takeDice); // Play takeDice sound when D20 count is decreased
+      playSound(takeDice);
+      setD20Count(prev => Math.max(prev + change, 0));
     } else if (change > 0 && totalDice < 10) {
-      playSound(putDice); // Play putDice sound when D20 count is increased
+      playSound(putDice);
+      setD20Count(prev => prev + 1);
     }
-    setD20Count((prev) => Math.max(prev + change, 0)); // Ensure count does not go below 0
   };
+  
 
   const handleCoinCountChange = (change) => {
     if (change < 0 && coinCount > 0) {
-      playSound(takeCoin); // Play takeCoin sound when coin count is decreased
+      playSound(takeCoin);
+      setCoinCount(prev => Math.max(prev + change, 0));
     } else if (change > 0 && totalDice < 10) {
-      playSound(putCoin); // Play putCoin sound when coin count is increased
+      playSound(putCoin);
+      setCoinCount(prev => prev + 1);
     }
-    setCoinCount((prev) => Math.max(prev + change, 0)); // Ensure count does not go below 0
   };
+  
   
    // Effect to update dice images immediately when their counts change
    useEffect(() => {
@@ -192,42 +203,59 @@ function App() {
       coinAudio.play();
     }
   
-    let counter = 0;
+    let counter = 0; //amount of image switches
     let finalCoinResults = [];
   
     const rollInterval = setInterval(() => {
-      const d6Results = Array.from({ length: d6Count }, () => Math.floor(Math.random() * 6));
-      const d20Results = Array.from({ length: d20Count }, () => Math.floor(Math.random() * 20));
-      const coinResults = Array.from({ length: coinCount }, () => Math.floor(Math.random() * 2));
+      let d6Results, d20Results, coinResults;
   
-      setD6Images(d6Results.map(i => D6Imgs[i]));
-      setD20Images(d20Results.map(i => D20Imgs[i]));
-      setCoinImages(coinResults.map(i => CoinImgs[i]));
-      finalCoinResults = coinResults;
+      if (counter % 2 === 0) {
+        // When counter is an even number, show certain image
+        d6Results = Array.from({ length: d6Count }, () => D6_corner);
+        d20Results = Array.from({ length: d20Count }, () => D20_corner);
+        coinResults = Array.from({ length: coinCount }, () => CoinMid);
+      } else {
+        // Odd counter, show random
+        d6Results = Array.from({ length: d6Count }, () => D6Imgs[Math.floor(Math.random() * 6)]);
+        d20Results = Array.from({ length: d20Count }, () => D20Imgs[Math.floor(Math.random() * 20)]);
+        coinResults = Array.from({ length: coinCount }, () => CoinImgs[Math.floor(Math.random() * 2)]);
+      }
+  
+      setD6Images(d6Results);
+      setD20Images(d20Results);
+      setCoinImages(coinResults);
+  
+      // Save real coin results for stat tracking
+      if (counter % 2 !== 0) {
+        finalCoinResults = coinResults.map(img => CoinImgs.indexOf(img));
+      }
   
       // Track results and unlocks
-      if (counter === 9) { //1 below the real number, as arrays start from 0
+      //WHEN CHANGING MAX AMOUNT OF IMAGES SWITCHES NEAR THE END OF THIS FUNCTION, CHANGE THIS TOO
+      if (counter === 7) { //1 below the real number, as arrays start from 0. 
         let newStats = { ...stats };
         let newUnlocked = [...unlockedSkins];
   
-        d20Results.forEach((val) => {
+        d20Results.forEach((img) => {
+          const val = D20Imgs.indexOf(img);
           if (val === 19) {
             newStats.nat20 += 1;
-            if (newUnlocked[3] === false) {
-              alert("Woah, you rolled a 20!. You are now the king of the Castle! Castle Roller added to Skins.")
+            if (!newUnlocked[3]) {
+              alert("Woah, you rolled a 20!. You are now the king of the Castle! Castle Roller added to Skins.");
             }
             newUnlocked[3] = true;
           }
           if (val === 0) {
             newStats.nat1 += 1;
-            if (newUnlocked[4] === false) {
-              alert("Aww, you rolled a 1. Have Bakunawi Jr as a consolation. Added to Skins.")
+            if (!newUnlocked[4]) {
+              alert("Aww, you rolled a 1. Have Bakunawi Jr as a consolation. Added to Skins.");
             }
             newUnlocked[4] = true;
           }
         });
   
-        d6Results.forEach((val) => {
+        d6Results.forEach((img) => {
+          const val = D6Imgs.indexOf(img);
           if (val === 0) newStats.d6nat6 += 1;
           if (val === 5) newStats.d6nat1 += 1;
         });
@@ -241,16 +269,14 @@ function App() {
         setUnlockedSkins(newUnlocked);
       }
   
-      counter++;
-      if (counter >= 10) {
+      counter++; //WHEN CHANGING MAX AMOUNT OF IMAGES SWITCHES BELOW, CHANGE ABOVE STAT CHECKER TOO
+      if (counter >= 8) { //change number to control amount of image switched. ENSURE THIS IS AN EVEN NUMBER
         clearInterval(rollInterval);
         setIsRolling(false);
       }
-    }, 100);
+    }, 100); //delay per image switch
   };
-
-  const totalDice = d6Count + d20Count + coinCount; //Limits max rollable dice to 10  
-
+  
   return (
     <div className="App">
       {/* Skins Menu */}
@@ -359,19 +385,9 @@ function App() {
         {isDiceVisible && (
           <div>
             <div className="dice-container">
-              {d6Images.map((img, index) => (
-                <img key={`d6-${animationKey}-${index}`} src={img} alt="D6 Result" className="dice d6-dice" />
-              ))}
-            </div>
-            <div className="dice-container">
-              {d20Images.map((img, index) => (
-                <img key={`d20-${animationKey}-${index}`} src={img} alt="D20 Result" className="dice d20-dice" />
-              ))}
-            </div>
-            <div className="dice-container">
-              {coinImages.map((img, index) => (
-                <img key={`coin-${animationKey}-${index}`} src={img} alt="Coin Flip Result" className="dice coin" />
-              ))}
+            {[...d6Images, ...d20Images, ...coinImages].map((img, index) => (
+              <img key={`all-${animationKey}-${index}`} src={img} alt="Roll Result" className="dice" />
+            ))}
             </div>
           </div>
         )}
