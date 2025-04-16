@@ -63,7 +63,9 @@ import putCoin from "./DiceImg/putCoin.MP3";
 function App() {
   const SkinImgs = [BakunawaRoller, BakunawaRollerG, BakunawaRollerR, CastleRoller, BakunawiJr];
   const D6Imgs = [D6_six, D6_five, D6_four, D6_three, D6_two, D6_one];
-  const D20Imgs = [D20_1, D20_2, D20_3, D20_4, D20_5, D20_6, D20_7, D20_8, D20_9, D20_10, D20_11, D20_12, D20_13, D20_14, D20_15, D20_16, D20_17, D20_18, D20_19, D20_20];
+  const D20Imgs = [
+    D20_1, D20_2, D20_3, D20_4, D20_5, D20_6, D20_7, D20_8, D20_9, D20_10,
+    D20_11, D20_12, D20_13, D20_14, D20_15, D20_16, D20_17, D20_18, D20_19, D20_20];
   const CoinImgs = [Coin1, Coin2];
 
   const [d6Images, setD6Images] = useState([]);
@@ -80,10 +82,9 @@ function App() {
   const [coinCount, setCoinCount] = useState(0);
   const [showSkin, setShowSkin] = useState(false);
   const [statsVisible, setStatsVisible] = useState(false);
-  const [shakeEnabled, setShakeEnabled] = useState(true); // State to manage shake functionality
+  const [shakeEnabled, setShakeEnabled] = useState(true);
+  const [fivesMode, setFivesMode] = useState(false);
   const totalDice = d6Count + d20Count + coinCount;
-
-  
 
   const [stats, setStats] = useState({
     nat20: 0,
@@ -92,51 +93,21 @@ function App() {
     d6nat1: 0,
     heads: 0,
     tails: 0,
+    fives: 0,
   });
 
-  const [unlockedSkins, setUnlockedSkins] = useState([true, true, true, false, false]); // Only first 3 are unlocked initially
+  const [unlockedSkins, setUnlockedSkins] = useState([true, true, true, false, false]);
 
-  useEffect(() => {
-    let lastX = 0, lastY = 0, lastZ = 0, lastTime = 0;
-    const SHAKE_THRESHOLD = 40; // Adjust this value to change sensitivity
-  
-    const handleMotion = (event) => {
-      if (!event.accelerationIncludingGravity) return;
-  
-      const { x, y, z } = event.accelerationIncludingGravity;
-      const currentTime = Date.now();
-      const timeDiff = currentTime - lastTime;
-  
-      // Prevent multiple rolls while one is already in progress
-      if (isRolling || timeDiff < 200) return;
-      if (!shakeEnabled) return; // Check if shake is enabled
-  
-      if (timeDiff > 200) {
-        const speed = Math.abs(x - lastX) + Math.abs(y - lastY) + Math.abs(z - lastZ);
-        if (speed > SHAKE_THRESHOLD) {
-          rollDice();
-        }
-        lastX = x;
-        lastY = y;
-        lastZ = z;
-        lastTime = currentTime;
-      }
-    };
-  
-    window.addEventListener("devicemotion", handleMotion);
-    return () => {
-      window.removeEventListener("devicemotion", handleMotion);
-    };
-  }, [isRolling, d6Count, d20Count, shakeEnabled]);
-
-   // Play sound when dice or coin count changes
-   const playSound = (sound) => {
+  const playSound = (sound) => {
     const audio = new Audio(sound);
     audio.playbackRate = 0.9 + Math.random() * 0.1;
     audio.play();
   };
 
+  const cancelFivesMode = () => setFivesMode(false);
+
   const handleD6CountChange = (change) => {
+    cancelFivesMode();
     if (change < 0 && d6Count > 0) {
       playSound(takeDice);
       setD6Count(prev => Math.max(prev + change, 0));
@@ -145,9 +116,9 @@ function App() {
       setD6Count(prev => prev + 1);
     }
   };
-  
 
   const handleD20CountChange = (change) => {
+    cancelFivesMode();
     if (change < 0 && d20Count > 0) {
       playSound(takeDice);
       setD20Count(prev => Math.max(prev + change, 0));
@@ -156,9 +127,9 @@ function App() {
       setD20Count(prev => prev + 1);
     }
   };
-  
 
   const handleCoinCountChange = (change) => {
+    cancelFivesMode();
     if (change < 0 && coinCount > 0) {
       playSound(takeCoin);
       setCoinCount(prev => Math.max(prev + change, 0));
@@ -167,6 +138,15 @@ function App() {
       setCoinCount(prev => prev + 1);
     }
   };
+
+  const activateFivesMode = () => {
+    alert("Fives is a game where you get 5 dice, and roll them until you get 5 of a kind. First player to get it wins!");
+    setFivesMode(true);
+    setD6Count(5);
+    setD20Count(0);
+    setCoinCount(0);
+  };
+
   
   
    // Effect to update dice images immediately when their counts change
@@ -207,6 +187,7 @@ function App() {
     let finalCoinResults = [];
   
     const rollInterval = setInterval(() => {
+      let finalD6Results = [];
       let d6Results, d20Results, coinResults;
   
       if (counter % 2 === 0) {
@@ -235,6 +216,14 @@ function App() {
       if (counter === 7) { //1 below the real number, as arrays start from 0. 
         let newStats = { ...stats };
         let newUnlocked = [...unlockedSkins];
+
+        if (fivesMode) {
+          const allSame = finalD6Results.every(val => val === finalD6Results[0]);
+          if (allSame && finalD6Results.length === 5) {
+            alert("FIVE!");
+            newStats.fives += 1;
+          }
+        }
   
         d20Results.forEach((img) => {
           const val = D20Imgs.indexOf(img);
@@ -304,6 +293,8 @@ function App() {
         <p>D6 Nat1s: {stats.d6nat1}</p>
         <p>Coin Heads: {stats.heads}</p>
         <p>Coin Tails: {stats.tails}</p>
+
+        <p>Fives: {stats.fives}</p>
       </div>
 
       {/* Skin Selection */}
@@ -362,7 +353,12 @@ function App() {
               {shakeEnabled ? 'Disable Shake' : 'Enable Shake'}
             </button> 
           </div>
+
+          <div style={{ marginTop: '20px' }}>
+          <h2>Fives Game Mode</h2>
+          <button className="adjust-btn" onClick={activateFivesMode}>Play Fives</button>
         </div>
+      </div>
 
       {/* Instructions */}
       <h3 style={{ color: 'white' }}>This is a dice prototype! Test it out!</h3>
