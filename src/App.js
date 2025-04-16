@@ -100,7 +100,7 @@ function App() {
 
   const playSound = (sound) => {
     const audio = new Audio(sound);
-    audio.playbackRate = 0.9 + Math.random() * 0.1;
+    audio.playbackRate = 0.9 + Math.random() * 0.15;
     audio.play();
   };
 
@@ -172,14 +172,14 @@ function App() {
     // Play dice SFX only if there are dice
     if (d6Count > 0 || d20Count > 0) {
       const diceAudio = new Audio(DiceSFX);
-      diceAudio.playbackRate = 0.7 + Math.random() * 0.3;
+      diceAudio.playbackRate = 0.85 + Math.random() * 0.15;
       diceAudio.play();
     }
   
     // Play coin SFX only if there are coins
     if (coinCount > 0) {
       const coinAudio = new Audio(coinSFX);
-      coinAudio.playbackRate = 0.7 + Math.random() * 0.3;
+      coinAudio.playbackRate = 0.85 + Math.random() * 0.15;
       coinAudio.play();
     }
   
