@@ -82,6 +82,7 @@ function App() {
   const [coinCount, setCoinCount] = useState(0);
   const [showSkin, setShowSkin] = useState(false);
   const [statsVisible, setStatsVisible] = useState(false);
+  const [showGameSettings, setShowGameSettings] = useState(false);
   const [shakeEnabled, setShakeEnabled] = useState(true);
   const [fivesMode, setFivesMode] = useState(false);
   const totalDice = d6Count + d20Count + coinCount;
@@ -280,6 +281,12 @@ function App() {
         <span>Dices & Etc.</span>
       </button>
 
+      {/* Game Settings */}
+      <button className="game-settings" onClick={() => setShowGameSettings(true)}>
+        <img src={Button_B} alt="Settings" />
+        <span>Game Modes</span>
+      </button> 
+
       {/* Stats Button */}
       <button className="stats-button" onClick={() => setStatsVisible(!statsVisible)}>
         Statistics
@@ -331,7 +338,7 @@ function App() {
             <img src={Button_R} alt="Close" />
             <span>Close</span>
           </button>
-          <br />
+          <br/>
           <h2>D6 Count</h2>
           <button className="adjust-btn" onClick={() => handleD6CountChange(-1)}>-</button>
           <span className="count-display">{d6Count}</span>
@@ -353,7 +360,14 @@ function App() {
               {shakeEnabled ? 'Disable Shake' : 'Enable Shake'}
             </button> 
           </div>
+      </div>
 
+      {/* Gamemodes */}
+      <div className={`menu-overlay right ${showGameSettings ? 'show' : ''}`}>
+        <button className="close-btn" onClick={() => setShowGameSettings(false)}>
+          <img src={Button_R} alt="Close" />
+          <span>Close</span>
+        </button>
           <div style={{ marginTop: '20px' }}>
           <h2>Fives Game Mode</h2>
           <button className="adjust-btn" onClick={activateFivesMode}>Play Fives</button>
