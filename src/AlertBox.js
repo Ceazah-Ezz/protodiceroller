@@ -1,23 +1,36 @@
-import React, { useState, useEffect } from 'react';
-
+import React, { useState, useEffect, useRef } from 'react';
+import AlertSFX from './DiceImg/alert.m4a';
 function AlertBox({ message, onClose }) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     if (message) {
-      setVisible(true);
+     setVisible(true);
+     const AlertSfx = new Audio(AlertSFX);
+     AlertSfx.play();
     }
   }, [message]);
 
-  const handleClose = () => {
-    setVisible(false);
-    setTimeout(() => onClose(), 300); // Allow time for animation
-  };
+  useEffect(() => {
+    const handleAnyClick = () => {
+      setVisible(false);
+      setTimeout(() => onClose(), 300); // Allow time for animation
+    };
+
+    if (visible) {
+      document.addEventListener('mousedown', handleAnyClick);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleAnyClick);
+    };
+  }, [visible, onClose]);
 
   return (
     <div className={`custom-alert ${visible ? 'show' : ''}`}>
-      <button className="alert-close" onClick={handleClose}>×</button>
-      <div>{message}</div>
+      <div>
+        <div>{message}</div>
+        <div style={{ marginTop: '20px', fontSize: '0.9em', color: '#666' }}>Click anywhere to continue</div>
+      </div>
     </div>
   );
 }

@@ -420,17 +420,6 @@ body, html {
   transform: translate(-50%, -50%);
 }
 
-.alert-close {
-  position: absolute;
-  top: 0px;
-  right: 5px;
-  background: none;
-  border: none;
-  font-size: 20px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
 /* --- Mobile Styles --- */
 @media (max-width: 768px) { /* Adjust breakpoint as needed */
   .App {
