@@ -2,6 +2,9 @@ import './App.css';
 import { useState, useEffect } from 'react';
 
 import DiceTray from "./DiceImg/DiceTray.png";
+
+import AlertBox from './AlertBox'; // use this instead of alert()
+
 //Rollers
 import BakunawaRoller from "./DiceImg/BakunawaRoller.png";
 import BakunawaRollerG from "./DiceImg/BakunawaRollerG.png";
@@ -99,6 +102,8 @@ function App() {
 
   const [unlockedSkins, setUnlockedSkins] = useState([true, true, true, false, false]);
 
+  const [alertMsg, setAlertMsg] = useState(''); // New alert message state
+
   const playSound = (sound) => {
     const audio = new Audio(sound);
     audio.playbackRate = 0.9 + Math.random() * 0.15;
@@ -141,7 +146,7 @@ function App() {
   };
 
   const activateFivesMode = () => {
-    alert("Fives is a game where you get 5 dice, and roll them until you get 5 of a kind. First player to get it wins!");
+    setAlertMsg("Fives is a game where you get 5 dice and roll until you get 5 of a kind. First one to get it wins!");
     setFivesMode(true);
     setD6Count(5);
     setD20Count(0);
@@ -221,7 +226,7 @@ function App() {
         if (fivesMode) {
           const allSame = finalD6Results.every(val => val === finalD6Results[0]);
           if (allSame && finalD6Results.length === 5) {
-            alert("FIVE!");
+            setAlertMsg("FIVE!");
             newStats.fives += 1;
           }
         }
@@ -231,14 +236,14 @@ function App() {
           if (val === 19) {
             newStats.nat20 += 1;
             if (!newUnlocked[3]) {
-              alert("Woah, you rolled a 20!. You are now the king of the Castle! Castle Roller added to Skins.");
+              setAlertMsg("Woah, you rolled a 20!. You are now the king of the Castle! Castle Roller added to Skins.");
             }
             newUnlocked[3] = true;
           }
           if (val === 0) {
             newStats.nat1 += 1;
             if (!newUnlocked[4]) {
-              alert("Aww, you rolled a 1. Have Bakunawi Jr as a consolation. Added to Skins.");
+               setAlertMsg("Aww, you rolled a 1. Have Bakunawi Jr as a consolation. Added to Skins.");
             }
             newUnlocked[4] = true;
           }
@@ -402,6 +407,9 @@ function App() {
           </div>
         )}
       </div>
+      {alertMsg && (
+        <AlertBox message={alertMsg} onClose={() => setAlertMsg('')} />
+      )}
     </div>
   );
 }

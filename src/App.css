@@ -397,6 +397,40 @@ body, html {
   transform: translateX(0);
 }
 
+/*AlertBox Styles*/
+.custom-alert {
+  position: fixed;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  padding: 20px 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  transition: top 0.5s ease;
+  z-index: 9999;
+  max-width: 80%;
+  text-align: center;
+  font-weight: bold;
+  color: #333;
+}
+
+.custom-alert.show {
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.alert-close {
+  position: absolute;
+  top: 0px;
+  right: 5px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
 /* --- Mobile Styles --- */
 @media (max-width: 768px) { /* Adjust breakpoint as needed */
   .App {
