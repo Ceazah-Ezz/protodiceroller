@@ -63,6 +63,10 @@ import coinSFX from "./DiceImg/coinSFX.MP3";
 import takeCoin from "./DiceImg/takeCoin.MP3";
 import putCoin from "./DiceImg/putCoin.MP3";
 
+//Containers
+import ContainerSelector from "./DiceImg/Dice_Container_top.png";
+import DiceContainer from "./DiceImg/Dice_Container_body.png";
+
 function App() {
   const SkinImgs = [BakunawaRoller, BakunawaRollerG, BakunawaRollerR, CastleRoller, BakunawiJr];
   const D6Imgs = [D6_six, D6_five, D6_four, D6_three, D6_two, D6_one];
@@ -153,7 +157,16 @@ function App() {
     setCoinCount(0);
   };
 
-  
+  const handleRemoveDice = (index) => {
+    if (isRolling) return;
+    if (index < d6Count) {
+      handleD6CountChange(-1);
+    } else if (index < d6Count + d20Count) {
+      handleD20CountChange(-1);
+    } else {
+      handleCoinCountChange(-1);
+    }
+  }; 
   
    // Effect to update dice images immediately when their counts change
    useEffect(() => {
@@ -384,12 +397,6 @@ function App() {
       <h5 style={{ color: 'white' }}>Click on the Button or Skin to roll the dice!</h5>
       <h5 style={{ color: 'white' }}>If you are on Mobile you can also shake to roll the dice!</h5>
 
-      <div style={{ marginBottom: '20px' }}>
-        <button className="center-roll-btn" onClick={rollDice} disabled={isRolling}>
-          <img src={DiceButton} alt="DiceButton" style={{width: '100px', height: '100px'}}/>
-        </button>
-      </div>
-
       <div className={`image-container${isRolling ? ' rolling' : ''}`}>
         {showSkin && (
           <button className={`bakunawa-button${isRolling ? ' rolling active' : ''}`} onClick={rollDice} disabled={isRolling}>
@@ -397,15 +404,26 @@ function App() {
           </button>
         )}
 
+      <div className="dice-container-top" >
+        <img src={D6_six} alt="D6" onClick={() => handleD6CountChange(1)}/>
+        <img src={D20_20} alt="D20" onClick={() => handleD20CountChange(1)}/>
+        <img src={Coin1} alt="Coin" onClick={() => handleCoinCountChange(1)}/>
+      </div>
+
         {isDiceVisible && (
           <div>
-            <div className="dice-container">
+            <div className="dice-container" >
             {[...d6Images, ...d20Images, ...coinImages].map((img, index) => (
-              <img key={`all-${animationKey}-${index}`} src={img} alt="Roll Result" className="dice" />
+              <img key={`all-${animationKey}-${index}`} src={img} alt="Roll Result" className="dice" onClick={() => handleRemoveDice(index)} title="Click to remove" style={{ cursor: 'pointer' }} />
             ))}
             </div>
           </div>
         )}
+      <div style={{ marginBottom: '20px' }}>
+        <button className="center-roll-btn" onClick={rollDice} disabled={isRolling}>
+          <img src={DiceButton} alt="DiceButton" style={{width: '100px', height: '100px'}}/>
+        </button>
+      </div>
       </div>
       {alertMsg && (
         <AlertBox message={alertMsg} onClose={() => setAlertMsg('')} />
