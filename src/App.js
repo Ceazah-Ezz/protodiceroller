@@ -13,7 +13,10 @@ import DiceButton from "./DiceImg/DiceButton.png";
 import DiceTray from "./DiceImg/DiceTray.png";
 
 // Dice buttons
+import D4_4 from './DiceImg/d4_4.png';
 import D6_six from './DiceImg/D6_six.png';
+import D8_8 from './DiceImg/d8_8.png';
+import D10_10 from './DiceImg/d10_10.png';
 import D20_20 from './DiceImg/d20_20.png';
 import Coin1 from './DiceImg/Coin1.png';
 
@@ -23,31 +26,37 @@ import DiceContainer from "./DiceImg/Dice_Container_body.png";
 
 function App() {
   const {
-    SkinImgs, D6Imgs, D20Imgs, CoinImgs,
-    d6Images, d20Images, coinImages, isRolling, isDiceVisible,
+    SkinImgs, D4Imgs, D6Imgs, D8Imgs, D10Imgs, D20Imgs, CoinImgs,
+    d4Images, d6Images, d8Images, d10Images, d20Images, coinImages, isRolling, isDiceVisible,
     animationKey, currentSkinIndex, showMenu, showDiceSettings,
-    d6Count, d20Count, coinCount, showSkin, statsVisible, showGameSettings,
+    d4Count, d6Count, d8Count, d10Count, d20Count, coinCount, showSkin, statsVisible, showGameSettings,
     shakeEnabled, stats, unlockedSkins, alertMsg,
-    setShowMenu, setShowDiceSettings, setD6Count, setD20Count, setCoinCount,
+    setShowMenu, setShowDiceSettings, setD4Count, setD6Count, setD8Count, setD10Count, setD20Count, setCoinCount,
     setShowSkin, setStatsVisible, setShowGameSettings,
     setShakeEnabled, setCurrentSkinIndex, setAlertMsg,
-    handleD6CountChange, handleD20CountChange, handleCoinCountChange,
+    handleD4CountChange, handleD6CountChange, handleD8CountChange, handleD10CountChange, handleD20CountChange, handleCoinCountChange,
     rollDice
   } = useDices();
 
   const {activateFivesMode, fivesMode,} = useGamemodes({
-    d6Count, d20Count, coinCount,
-    setD6Count, setD20Count, setCoinCount, setAlertMsg,
+    d4Count, d6Count, d8Count, d10Count, d20Count, coinCount,
+    setD4Count, setD6Count, setD8Count, setD10Count, setD20Count, setCoinCount, setAlertMsg,
   });
 
   const handleRemoveDice = (index) => {
     if (isRolling) return;
-    if (index < d6Count) {
+    if (index < d4Count) {
+      handleD4CountChange(-1);
+    } else if (index < d4Count + d6Count) { 
       handleD6CountChange(-1);
-    } else if (index < d6Count + d20Count) {
-      handleD20CountChange(-1);
+    } else if (index < d4Count + d6Count + d8Count) {
+      handleD8CountChange(-1);
+    } else if (index < d4Count + d6Count + d8Count + d10Count) {
+    handleD10CountChange(-1);
+    } else if (index < d4Count + d6Count + d8Count + d10Count + d20Count) {
+    handleD20CountChange(-1);
     } else {
-      handleCoinCountChange(-1);
+    handleCoinCountChange(-1);
     }
   }; 
   
@@ -80,8 +89,11 @@ function App() {
           <h2>Statistics</h2>
           <p>D20 Nat20s: {stats.nat20}</p>
           <p>D20 Nat1s: {stats.nat1}</p>
+          <p>D10 Nat10s: {stats.d10nat10}</p>
+          <p>D8 Nat8s: {stats.nat8}</p>
           <p>D6 Nat6s: {stats.d6nat6}</p>
           <p>D6 Nat1s: {stats.d6nat1}</p>
+          <p>D4 Nat4s: {stats.d4nat4}</p>
           <p>Coin Heads: {stats.heads}</p>
           <p>Coin Tails: {stats.tails}</p>
 
@@ -123,10 +135,25 @@ function App() {
               <span>Close</span>
             </button>
             <br/>
+            <h2>D4 Count</h2>
+            <button className="adjust-btn" onClick={() => handleD4CountChange(-1)}>-</button>
+            <span className="count-display">{d4Count}</span>
+            <button className="adjust-btn" onClick={() => handleD4CountChange(1)}>+</button>
+
             <h2>D6 Count</h2>
             <button className="adjust-btn" onClick={() => handleD6CountChange(-1)}>-</button>
             <span className="count-display">{d6Count}</span>
             <button className="adjust-btn" onClick={() => handleD6CountChange(1)}>+</button>
+
+            <h2>D8 Count</h2>
+            <button className="adjust-btn" onClick={() => handleD8CountChange(-1)}>-</button>
+            <span className="count-display">{d8Count}</span>
+            <button className="adjust-btn" onClick={() => handleD8CountChange(1)}>+</button>
+
+            <h2>D10 Count</h2>
+            <button className="adjust-btn" onClick={() => handleD10CountChange(-1)}>-</button>
+            <span className="count-display">{d10Count}</span>
+            <button className="adjust-btn" onClick={() => handleD10CountChange(1)}>+</button>
 
             <h2>D20 Count</h2>
             <button className="adjust-btn" onClick={() => handleD20CountChange(-1)}>-</button>
@@ -176,26 +203,27 @@ function App() {
             </button>
           )}
 
-      <div className="dice-container-top" >
+      <div className="dice-selector" >
         <img src={D6_six} alt="D6" onClick={() => handleD6CountChange(1)}/>
         <img src={D20_20} alt="D20" onClick={() => handleD20CountChange(1)}/>
         <img src={Coin1} alt="Coin" onClick={() => handleCoinCountChange(1)}/>
+        <img src={D4_4} alt="D4" onClick={() => handleD4CountChange(1)}/>
+        <img src={D8_8} alt="D8" onClick={() => handleD8CountChange(1)}/>
+        <img src={D10_10} alt="D10" onClick={() => handleD10CountChange(1)}/>
       </div>
 
-          {isDiceVisible && (
-            <div>
-              <div className="dice-container" >
-              {[...d6Images, ...d20Images, ...coinImages].map((img, index) => (
-                <img key={`all-${animationKey}-${index}`} src={img} alt="Roll Result" className="dice" onClick={() => handleRemoveDice(index)} title="Click to remove" style={{ cursor: 'pointer' }} />
-              ))}
-              </div>
+        {isDiceVisible && (
+            <div className="dice-container" >
+            {[...d4Images, ...d6Images, ...d8Images, ...d10Images, ...d20Images, ...coinImages].map((img, index) => (
+              <img key={`all-${animationKey}-${index}`} src={img} alt="Roll Result" className="dice" onClick={() => handleRemoveDice(index)} title="Click to remove" style={{ cursor: 'pointer' }} />
+            ))}
             </div>
-          )}
-        </div>
-        {alertMsg && (
-          <AlertBox message={alertMsg} onClose={() => setAlertMsg('')} />
         )}
       </div>
-    );
+      {alertMsg && (
+        <AlertBox message={alertMsg} onClose={() => setAlertMsg('')} />
+      )}
+    </div>
+  );
 }
   export default App;
