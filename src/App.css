@@ -96,11 +96,11 @@ body, html {
 }
 
 @keyframes diceRoll {
-  0% { transform: translateY(0); }
-  10% { transform: translateY(-100px); }
-  50% { transform: translateY(0); }
-  70% { transform: translateY(-20px); }
-  100% { transform: translateY(0); }
+  0% { transform: translateY(0) rotate(72deg); }
+  10% { transform: translateY(-100px) rotate(144deg); }
+  50% { transform: translateY(0) rotate(216deg); }
+  70% { transform: translateY(-20px) rotate(288deg); }
+  100% { transform: translateY(0) rotate(360deg); }
 }
 
 @keyframes spawnDice {
@@ -454,6 +454,51 @@ body, html {
   top: 50%;
   transform: translate(-50%, -50%);
 }
+
+/*Shut The Box Styles*/
+.shut-box-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.block-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.block {
+  width: 50px;
+  height: 50px;
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 50px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.block.up {
+  background-color: #f1c40f;
+  color: black;
+}
+
+.block.down {
+  background-color: #555;
+  color: white;
+  text-decoration: line-through;
+}
+
+.block.disabled {
+  background-color: #ccc;
+  color: #666;
+  pointer-events: none;
+  text-decoration: none;
+}
+
 
 /* --- Mobile Styles --- */
 @media (max-width: 768px) { /* Adjust breakpoint as needed */
