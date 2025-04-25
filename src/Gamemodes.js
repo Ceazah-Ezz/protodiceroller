@@ -15,7 +15,7 @@ export function useGamemodes ({
     // Fives Gamemode
     const [fivesMode, setFivesMode] = useState(false);
 
-    const playSound = (sound) => {
+    const playSound = (sound) => { //play dice roll sfx
     const audio = new Audio(sound);
     audio.playbackRate = 0.9 + Math.random() * 0.15;
     audio.play();

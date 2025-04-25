@@ -1,6 +1,7 @@
 // Hello! Welcome to the source code! Each function displayed on the website is seperated by their own files respectively. 
 // This is for organization purposes as all dices and gamemodes contain a lot of lines of code.
 import './App.css';
+import { useState } from 'react'; 
 import { useDices } from './Dices';
 import { useGamemodes } from './Gamemodes';
 import AlertBox from './AlertBox';
@@ -11,21 +12,23 @@ import Button_B from "./DiceImg/Button_B.png";
 import Button_R from "./DiceImg/Button_R.png";
 import DiceButton from "./DiceImg/DiceButton.png";
 import DiceTray from "./DiceImg/DiceTray.png";
+import Arrow from "./DiceImg/arrow.png";
 
-// Dice buttons
+// Dice Assets
 import D4_4 from './DiceImg/d4_4.png';
 import D6_six from './DiceImg/D6_six.png';
 import D8_8 from './DiceImg/d8_8.png';
 import D10_10 from './DiceImg/d10_10.png';
 import D20_20 from './DiceImg/d20_20.png';
 import Coin1 from './DiceImg/Coin1.png';
+import takeDice from "./DiceImg/takeDice.MP3";
 
 //Containers
 import ContainerSelector from "./DiceImg/Dice_Container_top.png";
 import DiceContainer from "./DiceImg/Dice_Container_body.png";
 
 function App() {
-  const {
+  const { //imported variables and functions from Dices.js 
     SkinImgs, D4Imgs, D6Imgs, D8Imgs, D10Imgs, D20Imgs, CoinImgs,
     d4Images, d6Images, d8Images, d10Images, d20Images, coinImages, isRolling, isDiceVisible,
     animationKey, currentSkinIndex, showMenu, showDiceSettings,
@@ -38,11 +41,28 @@ function App() {
     rollDice
   } = useDices();
 
+  //logic for the visual dice
+  const [selectorPage, setSelectorPage] = useState(0);
+const takeDiceAudio = new Audio(takeDice);
+const allDiceIcons = [D6_six, D20_20, Coin1, D4_4, D8_8, D10_10];
+const diceGroups = [];
+
+for (let i = 0; i < allDiceIcons.length; i += 3) {
+  diceGroups.push(allDiceIcons.slice(i, i + 3));
+}
+
+const nextSelector = () => {
+  takeDiceAudio.play();
+  setSelectorPage((prev) => (prev + 1) % diceGroups.length);
+};
+  
+  //activates Fives
   const {activateFivesMode, fivesMode,} = useGamemodes({
     d4Count, d6Count, d8Count, d10Count, d20Count, coinCount,
     setD4Count, setD6Count, setD8Count, setD10Count, setD20Count, setCoinCount, setAlertMsg,
   });
 
+  //Removes Current Dice
   const handleRemoveDice = (index) => {
     if (isRolling) return;
     if (index < d4Count) {
@@ -59,6 +79,27 @@ function App() {
     handleCoinCountChange(-1);
     }
   }; 
+
+  //dice pages for the visual dice
+  const [dicePage, setDicePage] = useState(0);
+  const dicePages = [
+    [
+      <img key="d6" src={D6_six} alt="D6" onClick={() => handleD6CountChange(1)} />,
+      <img key="d20" src={D20_20} alt="D20" onClick={() => handleD20CountChange(1)} />,
+      <img key="coin" src={Coin1} alt="Coin" onClick={() => handleCoinCountChange(1)} />
+    ],
+    [
+      <img key="d4" src={D4_4} alt="D4" onClick={() => handleD4CountChange(1)} />,
+      <img key="d8" src={D8_8} alt="D8" onClick={() => handleD8CountChange(1)} />,
+      <img key="d10" src={D10_10} alt="D10" onClick={() => handleD10CountChange(1)} />
+    ]
+  ];
+  //switches visible dice
+  const handleNextPage = () => {
+    setDicePage((prev) => (prev + 1) % dicePages.length);
+  };
+
+  
   
   return (
     <div className="App">
@@ -90,7 +131,9 @@ function App() {
           <p>D20 Nat20s: {stats.nat20}</p>
           <p>D20 Nat1s: {stats.nat1}</p>
           <p>D10 Nat10s: {stats.d10nat10}</p>
-          <p>D8 Nat8s: {stats.nat8}</p>
+          <p>D10 Nat1s: {stats.d10nat1}</p>
+          <p>D8 Nat8s: {stats.d8nat8}</p>
+          <p>D8 Nat1s: {stats.d8nat1}</p>
           <p>D6 Nat6s: {stats.d6nat6}</p>
           <p>D6 Nat1s: {stats.d6nat1}</p>
           <p>D4 Nat4s: {stats.d4nat4}</p>
@@ -186,9 +229,11 @@ function App() {
         </div>
 
       {/* Instructions */}
-      <h3 style={{ color: 'white' }}>This is a dice prototype! Test it out!</h3>
-      <h5 style={{ color: 'white' }}>Click on the Button or Skin to roll the dice!</h5>
+      <h3 style={{ color: 'white' }}>Click dice at the to add dice!</h3>
+      <h5 style={{ color: 'white' }}>Click on the Purple Button or Skin to roll the dice!</h5>
       <h5 style={{ color: 'white' }}>If you are on Mobile you can also shake to roll the dice!</h5>
+      <h6 style={{ color: 'white' }}>Click the change dice button beside the selectable dice to change!</h6>
+      <h6 style={{ color: 'white' }}>Click on the dice in the dice tray to remove them!</h6>
 
       <div style={{ marginBottom: '20px' }}>
         <button className="center-roll-btn" onClick={rollDice} disabled={isRolling}>
@@ -203,22 +248,42 @@ function App() {
             </button>
           )}
 
-      <div className="dice-selector" >
-        <img src={D6_six} alt="D6" onClick={() => handleD6CountChange(1)}/>
-        <img src={D20_20} alt="D20" onClick={() => handleD20CountChange(1)}/>
-        <img src={Coin1} alt="Coin" onClick={() => handleCoinCountChange(1)}/>
-        <img src={D4_4} alt="D4" onClick={() => handleD4CountChange(1)}/>
-        <img src={D8_8} alt="D8" onClick={() => handleD8CountChange(1)}/>
-        <img src={D10_10} alt="D10" onClick={() => handleD10CountChange(1)}/>
-      </div>
+<div className="dice-selector-container">
+  <div className="dice-selector-wrapper">
+    <div className={`dice-selector slide-${selectorPage}`} key={selectorPage}>
+      {diceGroups[selectorPage].map((diceImg, index) => {
+        const handlers = [
+          () => handleD6CountChange(1),
+          () => handleD20CountChange(1),
+          () => handleCoinCountChange(1),
+          () => handleD4CountChange(1),
+          () => handleD8CountChange(1),
+          () => handleD10CountChange(1)
+        ];
+        return (
+          <img
+            key={index}
+            src={diceImg}
+            alt={`Dice ${index}`}
+            onClick={handlers[(selectorPage * 3) + index]}
+          />
+        );
+      })}
+    </div>
+    <button className="arrow-button" onClick={nextSelector}>
+      <img src={Arrow} alt="Next" />
+    </button>
+  </div>
+</div>
 
-        {isDiceVisible && (
+
+
             <div className="dice-container" >
             {[...d4Images, ...d6Images, ...d8Images, ...d10Images, ...d20Images, ...coinImages].map((img, index) => (
               <img key={`all-${animationKey}-${index}`} src={img} alt="Roll Result" className="dice" onClick={() => handleRemoveDice(index)} title="Click to remove" style={{ cursor: 'pointer' }} />
             ))}
             </div>
-        )}
+        
       </div>
       {alertMsg && (
         <AlertBox message={alertMsg} onClose={() => setAlertMsg('')} />
