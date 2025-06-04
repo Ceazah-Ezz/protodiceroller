@@ -1,124 +1,138 @@
 //   Contains all functions of the Gamemodes of the dice roller! Please make a comment of the new game mode if you wish to add it
-import { useState, useEffect } from 'react';
-import { useDices } from './Dices';
+import { useState, useEffect } from "react";
+import { useDices } from "./Dices";
 
-import takeDice from "./DiceImg/takeDice.MP3";
-import putDice from "./DiceImg/putDice.MP3";
-import takeCoin from "./DiceImg/takeCoin.MP3";
-import putCoin from "./DiceImg/putCoin.MP3";
+import takeDice from "../Assets/DiceImg/takeDice.MP3";
+import putDice from "../Assets/DiceImg/putDice.MP3";
+import takeCoin from "../Assets/DiceImg/takeCoin.MP3";
+import putCoin from "../Assets/DiceImg/putCoin.MP3";
 
-export function useGamemodes ({
-    d4Count, d6Count, d8Count, d10Count, d20Count, coinCount, finalD6Results, newStats, setAlertMsg, setD4Count, setD6Count, setD8Count, setD10Count, setD20Count, setCoinCount
-})
+export function useGamemodes({
+  d4Count,
+  d6Count,
+  d8Count,
+  d10Count,
+  d20Count,
+  coinCount,
+  finalD6Results,
+  newStats,
+  setAlertMsg,
+  setD4Count,
+  setD6Count,
+  setD8Count,
+  setD10Count,
+  setD20Count,
+  setCoinCount,
+}) {
+  // Fives Gamemode
+  const [fivesMode, setFivesMode] = useState(false);
 
-{
-    // Fives Gamemode
-    const [fivesMode, setFivesMode] = useState(false);
-
-    const playSound = (sound) => { //play dice roll sfx
+  const playSound = (sound) => {
+    //play dice roll sfx
     const audio = new Audio(sound);
     audio.playbackRate = 0.9 + Math.random() * 0.15;
     audio.play();
-    };
+  };
 
-    const totalDice = d4Count + d6Count + d8Count + d10Count + d20Count + coinCount; // calculates the total of dice
+  const totalDice =
+    d4Count + d6Count + d8Count + d10Count + d20Count + coinCount; // calculates the total of dice
 
-    const cancelFivesMode = () => setFivesMode(false); // Cancels gamemode
+  const cancelFivesMode = () => setFivesMode(false); // Cancels gamemode
 
-    // Functions below 
-    const handleD4CountChange = (change) => {
-      cancelFivesMode();
-      if (change < 0 && d4Count > 0) {
-          playSound(takeDice);
-          setD4Count(prev => Math.max(prev + change, 0));
-      } else if (change > 0 && totalDice < 10) {
-          playSound(putDice);
-          setD4Count(prev => prev + 1);
-      }
-      };
+  // Functions below
+  const handleD4CountChange = (change) => {
+    cancelFivesMode();
+    if (change < 0 && d4Count > 0) {
+      playSound(takeDice);
+      setD4Count((prev) => Math.max(prev + change, 0));
+    } else if (change > 0 && totalDice < 10) {
+      playSound(putDice);
+      setD4Count((prev) => prev + 1);
+    }
+  };
 
-    const handleD6CountChange = (change) => {
-        cancelFivesMode();
-        if (change < 0 && d6Count > 0) {
-            playSound(takeDice);
-            setD6Count(prev => Math.max(prev + change, 0));
-        } else if (change > 0 && totalDice < 10) {
-            playSound(putDice);
-            setD6Count(prev => prev + 1);
-        }
-        };
+  const handleD6CountChange = (change) => {
+    cancelFivesMode();
+    if (change < 0 && d6Count > 0) {
+      playSound(takeDice);
+      setD6Count((prev) => Math.max(prev + change, 0));
+    } else if (change > 0 && totalDice < 10) {
+      playSound(putDice);
+      setD6Count((prev) => prev + 1);
+    }
+  };
 
-    const handleD8CountChange = (change) => {
-        cancelFivesMode();
-        if (change < 0 && d8Count > 0) {
-            playSound(takeDice);
-            setD8Count(prev => Math.max(prev + change, 0));
-        } else if (change > 0 && totalDice < 10) {
-            playSound(putDice);
-            setD8Count(prev => prev + 1);
-        }
-        };
+  const handleD8CountChange = (change) => {
+    cancelFivesMode();
+    if (change < 0 && d8Count > 0) {
+      playSound(takeDice);
+      setD8Count((prev) => Math.max(prev + change, 0));
+    } else if (change > 0 && totalDice < 10) {
+      playSound(putDice);
+      setD8Count((prev) => prev + 1);
+    }
+  };
 
-    const handleD10CountChange = (change) => {
-        cancelFivesMode();
-        if (change < 0 && d10Count > 0) {
-            playSound(takeDice);
-            setD10Count(prev => Math.max(prev + change, 0));
-        } else if (change > 0 && totalDice < 10) {
-            playSound(putDice);
-            setD10Count(prev => prev + 1);
-        }
-        };
+  const handleD10CountChange = (change) => {
+    cancelFivesMode();
+    if (change < 0 && d10Count > 0) {
+      playSound(takeDice);
+      setD10Count((prev) => Math.max(prev + change, 0));
+    } else if (change > 0 && totalDice < 10) {
+      playSound(putDice);
+      setD10Count((prev) => prev + 1);
+    }
+  };
 
-    const handleD20CountChange = (change) => {
+  const handleD20CountChange = (change) => {
     cancelFivesMode();
     if (change < 0 && d20Count > 0) {
-        playSound(takeDice);
-        setD20Count(prev => Math.max(prev + change, 0));
+      playSound(takeDice);
+      setD20Count((prev) => Math.max(prev + change, 0));
     } else if (change > 0 && totalDice < 10) {
-        playSound(putDice);
-        setD20Count(prev => prev + 1);
+      playSound(putDice);
+      setD20Count((prev) => prev + 1);
     }
-    };
+  };
 
-    const handleCoinCountChange = (change) => {
+  const handleCoinCountChange = (change) => {
     cancelFivesMode();
     if (change < 0 && coinCount > 0) {
-        playSound(takeCoin);
-        setCoinCount(prev => Math.max(prev + change, 0));
+      playSound(takeCoin);
+      setCoinCount((prev) => Math.max(prev + change, 0));
     } else if (change > 0 && totalDice < 10) {
-        playSound(putCoin);
-        setCoinCount(prev => prev + 1);
+      playSound(putCoin);
+      setCoinCount((prev) => prev + 1);
     }
-    };
+  };
 
-    const activateFivesMode = () => {
-        setAlertMsg("Fives is a game where you get 5 dice and roll until you get 5 of a kind. First one to get it wins!");
-        setFivesMode(true);
-        setD4Count(0);
-        setD6Count(5);
-        setD8Count(0);
-        setD10Count(0);
-        setD20Count(0);
-        setCoinCount(0); 
-    };
+  const activateFivesMode = () => {
+    setAlertMsg(
+      "Fives is a game where you get 5 dice and roll until you get 5 of a kind. First one to get it wins!"
+    );
+    setFivesMode(true);
+    setD4Count(0);
+    setD6Count(5);
+    setD8Count(0);
+    setD10Count(0);
+    setD20Count(0);
+    setCoinCount(0);
+  };
 
-    // This will execute once the player lands five of the same roll, length is the amount of images in the array
-    useEffect(() => {
-        if (!fivesMode || !finalD6Results || finalD6Results.length !== 5) return; 
-        const timeout = setTimeout(() => {
-          const allSame = finalD6Results.every(val => val === finalD6Results[0]);
-          if (allSame) {
-            setAlertMsg("FIVE!");
-            newStats.fives += 1;
-          }
-        }, 50);      
-        return () => clearTimeout(timeout);
-      }, [finalD6Results, fivesMode]);
+  // This will execute once the player lands five of the same roll, length is the amount of images in the array
+  useEffect(() => {
+    if (!fivesMode || !finalD6Results || finalD6Results.length !== 5) return;
+    const timeout = setTimeout(() => {
+      const allSame = finalD6Results.every((val) => val === finalD6Results[0]);
+      if (allSame) {
+        setAlertMsg("FIVE!");
+        newStats.fives += 1;
+      }
+    }, 50);
+    return () => clearTimeout(timeout);
+  }, [finalD6Results, fivesMode]);
 
-
-      
-    /*This game mode is not working as intended, and has been commented out.
+  /*This game mode is not working as intended, and has been commented out.
     To the next people fixing it, all you have to do is make sure that the game does not end until a player cannot have their remaining Int as 0.
      const startShutTheBox = () => {
        setAlertMsg("Roll two D6's to play. Whatever you roll, you must put down an equal amount as written on the blocks. If you cannot put down an equal amount, skip your turn, and record your score according to the blocks. Lowest Score wins.");
@@ -274,5 +288,27 @@ export function useGamemodes ({
        setD6Images([]);
       }; */
 
-    return { alertMsg: '', fivesMode, finalD6Results, setAlertMsg, activateFivesMode, cancelFivesMode, handleCoinCountChange, handleD20CountChange, handleD6CountChange, handleD4CountChange, handleD8CountChange, handleD10CountChange, totalDice, playSound, setFivesMode, setD4Count, setD6Count, setD8Count, setD10Count, setD20Count, setCoinCount }; // Returns the functions and variables needed for the gamemode
+  return {
+    alertMsg: "",
+    fivesMode,
+    finalD6Results,
+    setAlertMsg,
+    activateFivesMode,
+    cancelFivesMode,
+    handleCoinCountChange,
+    handleD20CountChange,
+    handleD6CountChange,
+    handleD4CountChange,
+    handleD8CountChange,
+    handleD10CountChange,
+    totalDice,
+    playSound,
+    setFivesMode,
+    setD4Count,
+    setD6Count,
+    setD8Count,
+    setD10Count,
+    setD20Count,
+    setCoinCount,
+  }; // Returns the functions and variables needed for the gamemode
 }
