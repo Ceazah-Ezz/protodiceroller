@@ -1,23 +1,23 @@
-import roll from './rolldice.png'
-import scrollUp from './arrowUp.png'
-import scrollDown from './arrowDown.png'
+import roll from "./rolldice.png";
+import scrollUp from "./arrowUp.png";
+import scrollDown from "./arrowDown.png";
 import "./Revamped.css";
 import console from "./console-controller.svg";
 import histogram from "./histogram.svg";
 import playmat from "./SpiritTray.png";
-import D4Component from "../Components/D4_Component";
+import DieComponent from "../Components/DieComponent";
 
 function Revamped() {
-    // Temporary file to not interfere with the current app
-    // Will turn some into components once they're okay
-    // Will re-organize assets into separate folder
-    // To-Do:
-    // Not yet responsive
-    // Dice options
-    // Dice options functionality - Rikku?
-    // Roll button and Arrow button - DONE
-    // Roll and Arrow button Sizing 
-    // Have yet to get assets - in Gdrive
+  // Temporary file to not interfere with the current app
+  // Will turn some into components once they're okay
+  // Will re-organize assets into separate folder
+  // To-Do:
+  // Not yet responsive
+  // Dice options
+  // Dice options functionality - Rikku?
+  // Roll button and Arrow button - DONE
+  // Roll and Arrow button Sizing
+  // Have yet to get assets - in Gdrive
   return (
     <div className="flex bg-[#011f3f]">
       <div className="flex-col w-2/5 h-screen border-2 border-blue-500 px-3 py-5">
@@ -63,30 +63,35 @@ function Revamped() {
           <h1 className="text-white text-8xl font-bold">DICE ROLLER</h1>
         </div>
 
-            
-            {/* Playmat */}
-                <div className="relative flex flex-row h-5/6 border-2 border-red-500 justify-center items-center">
-                    {/* Scroll Arrows Container */}
-                    <div className="absolute left-10 top-1/2 -translate-y-1/2 flex flex-col justify-between items-center h-[680px] w-[408px] z-10">
-                        <button>
-                            <img src={scrollUp} alt="Scroll Up" className="w-6 h-6" />
-                            </button>
-                            
-                            <button>
-                                <img src={scrollDown} alt="Scroll Down" className="w-6 h-6" />
-                                </button>
-                        </div>
-                    {/* <D4Component/> */}
-                    {/* Playmat Image */}
-                    <img width={1920} height={1080} src={playmat} alt='PlayMat' className='z-0'/>
+        {/* Playmat */}
+        <div className="relative flex flex-row h-5/6 border-2 border-red-500 justify-center items-center">
+          {/* Scroll Arrows Container */}
+          <div className="absolute left-10 top-1/2 -translate-y-1/2 flex flex-col justify-between items-center h-[680px] w-[408px] z-10">
+            <button>
+              <img src={scrollUp} alt="Scroll Up" className="w-6 h-6" />
+            </button>
 
-                {/* Roll Button (positioned at bottom-right) */}
-                    <button className='absolute bottom-4 right-4 bg-[#05a895] hover:bg-[#048579] text-white font-bold py-2 px-6 rounded-[25px] shadow-lg transition duration-200"'>
-                        <img width={100} height={100} src={roll} alt='ROLL!'/>
-                    </button>
-                </div>
-            </div>
+            <button>
+              <img src={scrollDown} alt="Scroll Down" className="w-6 h-6" />
+            </button>
+          </div>
+          {/* <D4Component/> */}
+          {/* Playmat Image */}
+          <img
+            width={1920}
+            height={1080}
+            src={playmat}
+            alt="PlayMat"
+            className="z-0"
+          />
+
+          {/* Roll Button (positioned at bottom-right) */}
+          <button className='absolute bottom-4 right-4 bg-[#05a895] hover:bg-[#048579] text-white font-bold py-2 px-6 rounded-[25px] shadow-lg transition duration-200"'>
+            <img width={100} height={100} src={roll} alt="ROLL!" />
+          </button>
         </div>
+      </div>
+    </div>
   );
 }
 

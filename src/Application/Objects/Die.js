@@ -1,7 +1,9 @@
+import DieSkins from "./DieSkin";
+
 class Die {
-  constructor(die_assets, faceCount) {
-    if (!Array.isArray(die_assets)) {
-      throw new TypeError("die_assets must be an Array!");
+  constructor(die_assets, faceCount = 20) {
+    if (!(die_assets instanceof DieSkins)) {
+      throw new TypeError("die_assets must be a DieSkins Object!");
     }
     this.dieFaceImgs = die_assets.slice(0, -1);
     this.faceCount = faceCount;
@@ -37,7 +39,6 @@ class Die {
   }
 
   roll() {
-    console.log("Rolling");
     this.dieValue = Math.floor(Math.random() * this.faceCount);
   }
 }
