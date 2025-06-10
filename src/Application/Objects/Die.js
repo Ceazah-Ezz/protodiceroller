@@ -1,13 +1,16 @@
-import DieSkins from "./DieSkin";
+import DieSkin from "./DieSkin";
 
 class Die {
   constructor(die_assets, faceCount = 20) {
-    if (!(die_assets instanceof DieSkins)) {
+    if (!(die_assets instanceof DieSkin)) {
       throw new TypeError("die_assets must be a DieSkins Object!");
     }
-    this.dieFaceImgs = die_assets.slice(0, -1);
+    if (!Number.isInteger(faceCount)) {
+      throw new TypeError("faceCount must be an Integer!");
+    }
+    this.dieFaceImgs = die_assets.getDieAssets().slice(0, faceCount);
     this.faceCount = faceCount;
-    this.dieCornerImg = die_assets[die_assets.length - 1];
+    this.dieCornerImgs = die_assets.getDieAssets().slice(faceCount);
     this.dieValue = 1;
     this.isRolling = false;
     this.currentFaceImg = this.dieFaceImgs[0];
@@ -19,8 +22,8 @@ class Die {
   getFaceCount() {
     return this.faceCount;
   }
-  getDieCornerImg() {
-    return this.dieCornerImg;
+  getDieCornerImgs() {
+    return this.dieCornerImgs;
   }
   getDieValue() {
     return this.dieValue;

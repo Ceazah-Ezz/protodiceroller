@@ -76,6 +76,7 @@ function Revamped() {
             </button>
           </div>
           {/* <D4Component/> */}
+          <DieComponent />
           {/* Playmat Image */}
           <img
             width={1920}
