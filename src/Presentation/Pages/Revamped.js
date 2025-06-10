@@ -1,5 +1,4 @@
 import "./Revamped.css";
-import DieComponent from "../Components/DieComponent";
 import HowTo from "./HowTo";
 import Buttons from "./Buttons";
 import History from "./History";
