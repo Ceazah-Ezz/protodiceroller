@@ -1,8 +1,8 @@
-import "./Revamped.css";
 import HowTo from "./HowTo";
 import Buttons from "./Buttons";
 import History from "./History";
 import Playmat from "./Playmat";
+import "./Revamped.css";
 
 function Revamped() {
   // Temporary file to not interfere with the current app

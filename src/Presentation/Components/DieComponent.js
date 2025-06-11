@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Die from "../../Application/Objects/Die";
 import DieSkin from "../../Application/Objects/DieSkin";
+import { DieSkinContext } from "../Context/DieSkinContext";
 
-export default function DieComponent(passedSkin, dieType = 20) {
-  const skin = new DieSkin();
-  const [dieObj, setDieObj] = useState(() => new Die(skin, dieType));
+export default function DieComponent(dieType = 20) {
+  const skin = useContext(DieSkinContext).skin;
+  const [dieObj, setDieObj] = useState(
+    () => new Die(skin != null ? skin : new DieSkin(), dieType)
+  );
 
   const handleRoll = () => {
     let counter = 0;

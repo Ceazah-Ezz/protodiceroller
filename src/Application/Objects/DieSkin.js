@@ -22,7 +22,7 @@ import d20_corner1 from "../../Assets/DieSkins/BaseSkin/D20/D20RollFrames/D20Rol
 import d20_corner2 from "../../Assets/DieSkins/BaseSkin/D20/D20RollFrames/D20Roll2.png";
 import d20_corner3 from "../../Assets/DieSkins/BaseSkin/D20/D20RollFrames/D20Roll3.png";
 
-const baseD20Skin = [
+const defaultD20Skin = [
   d20_1,
   d20_2,
   d20_3,
@@ -49,15 +49,43 @@ const baseD20Skin = [
 ];
 
 class DieSkin {
-  constructor(Assets = baseD20Skin) {
-    if (!Array.isArray(Assets)) {
-      throw new TypeError("Assets must be an Array!");
-    }
-    this.dieAssets = Assets;
+  constructor(
+    d4Skin = [],
+    d6Skin = [],
+    d8Skin = [],
+    d12Skin = [],
+    d20Skin = [],
+    d100Skin = []
+  ) {
+    this.d4Skin = d4Skin;
+    this.d6Skin = d6Skin;
+    this.d8Skin = d8Skin;
+    this.d12Skin = d12Skin;
+    this.d20Skin = d20Skin;
+    this.d100Skin = d100Skin;
+    this.defaultSkin = defaultD20Skin;
   }
 
-  getDieAssets() {
-    return this.dieAssets;
+  getD4Assets() {
+    return [...this.d4Skin];
+  }
+  getD6Assets() {
+    return [...this.d6Skin];
+  }
+  getD8Assets() {
+    return [...this.d8Skin];
+  }
+  getD12Assets() {
+    return [...this.d12Skin];
+  }
+  getD20Assets() {
+    return [...this.d20Skin];
+  }
+  getD100Assets() {
+    return [...this.d100Skin];
+  }
+  getDefaultSkin() {
+    return [...this.defaultSkin];
   }
 }
 
