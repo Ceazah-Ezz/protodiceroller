@@ -7,7 +7,7 @@ function Buttons() {
       <button className="h-[300px] w-[300px] bg-[#05a895] m-3 rounded-[20px]">
         <img className="h-[200px] w-[200px]" src={console} alt="Console Icon" />
       </button>
-      <button className="bg-[#05a895] m-3 rounded-[20px]">
+      <button className="h-[200px] w-[200px]bg-[#05a895] m-3 rounded-[20px]">
         <img
           className="h-[200px] w-[200px]"
           src={histogram}

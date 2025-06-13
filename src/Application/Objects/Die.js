@@ -17,7 +17,6 @@ class Die {
   getIsRolling() {
     return this.isRolling;
   }
-
   setIsRolling(value) {
     this.isRolling = value;
   }
