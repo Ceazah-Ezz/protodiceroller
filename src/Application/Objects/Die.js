@@ -4,8 +4,7 @@ class Die {
       throw new TypeError("faceCount must be an Integer!");
     }
     this.faceCount = faceCount;
-    this.dieValue = 1;
-    this.isRolling = false;
+    this.dieValue = 0;
   }
 
   getFaceCount() {
@@ -14,15 +13,16 @@ class Die {
   getDieValue() {
     return this.dieValue;
   }
-  getIsRolling() {
-    return this.isRolling;
-  }
-  setIsRolling(value) {
-    this.isRolling = value;
-  }
 
   roll() {
-    this.dieValue = Math.floor(Math.random() * this.faceCount);
+    switch (this.faceCount) {
+      case 100:
+        this.dieValue = Math.floor((Math.random() * this.faceCount) % 10);
+        break;
+      default:
+        this.dieValue = Math.floor(Math.random() * this.faceCount);
+        break;
+    }
   }
 }
 

@@ -5,32 +5,6 @@ export default function DieComponent({
   dieType,
   onAdd = () => {},
 }) {
-  // const handleRoll = () => {
-  //   let counter = 0;
-
-  //   const rollInterval = setInterval(() => {
-  //     dieObj.roll();
-  //     if (counter % 2 === 0) {
-  //       dieObj.setCurrentFaceImg(
-  //         dieObj.getDieCornerImgs()[dieObj.getDieValue() % 3]
-  //       );
-  //     } else {
-  //       dieObj.setCurrentFaceImg(
-  //         dieObj.getDieFacesImgs()[dieObj.getDieValue()]
-  //       );
-  //     }
-  //     counter++;
-  //     const clonedDie = Object.assign(
-  //       Object.create(Object.getPrototypeOf(dieObj)),
-  //       dieObj
-  //     );
-  //     setDieObj(clonedDie);
-  //     if (counter >= 8) {
-  //       clearInterval(rollInterval);
-  //     }
-  //   }, 100);
-  // };
-
   if (dieType !== undefined) {
     let renderDieAssets = [];
     switch (dieType) {
@@ -69,7 +43,7 @@ export default function DieComponent({
     );
   } else {
     let dieAssets = [];
-    let dieAssetIndex = die.getDieValue() - 1;
+    let dieAssetIndex = die.getDieValue();
     switch (die.getFaceCount()) {
       case 4:
         dieAssets.push(...dieSkin.getD4Assets());

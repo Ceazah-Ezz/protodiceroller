@@ -3,25 +3,14 @@ import { useContext } from "react";
 import playmat from "./SpiritTray.png";
 import { DieContext } from "../Context/DieContext";
 import { DieSkinContext } from "../Context/DieSkinContext";
-import Die from "../../Application/Objects/Die";
 import DieComponent from "../Components/DieComponent";
 
 import "./Revamped.css";
 
 function Playmat() {
-  const { die, setDie } = useContext(DieContext);
+  const { dice, handleAddDie, handleRemoveDie, handleRollDice } =
+    useContext(DieContext);
   const { dieSkin } = useContext(DieSkinContext);
-
-  const handleAddDie = (dieType) => {
-    const newDie = new Die(dieType);
-    setDie([...die, newDie]);
-  };
-
-  const handleRemoveDie = (dieIndex) => {
-    const newDieArray = [...die];
-    newDieArray.splice(dieIndex, 1);
-    setDie(newDieArray);
-  };
 
   return (
     <div className="flex flex-row w-full h-5/6 border-2 border-red-500 justify-center items-center">
@@ -85,7 +74,7 @@ function Playmat() {
 
         <img src={playmat} alt="PlayMat" className="w-full" />
         <div className="flex flex-row">
-          {die.map((die, index) => {
+          {dice.map((die, index) => {
             return (
               <DieComponent
                 key={index}
@@ -98,6 +87,13 @@ function Playmat() {
             );
           })}
         </div>
+        <button
+          onClick={() => {
+            handleRollDice();
+          }}
+        >
+          Roll Dice
+        </button>
       </div>
 
       {/* <button className='absolute bottom-4 right-4 bg-[#05a895] hover:bg-[#048579] text-white font-bold py-2 px-6 rounded-[25px] shadow-lg transition duration-200"'>
