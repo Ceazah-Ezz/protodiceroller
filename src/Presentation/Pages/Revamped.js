@@ -25,22 +25,22 @@ function Revamped() {
 
       <div className="flex-col w-full h-screen border-2 border-blue-500">
         {/* Title */}
-        <div className="hidden md:flex flex-row h-1/6 border-2 border-red-500 justify-center items-center">
+        <div className="hidden md:flex flex-row h-auto border-2 border-red-500 justify-center items-center p-2">
           <h1 className="text-white text-8xl font-bold">DICE ROLLER</h1>
         </div>
 
         {/* Playmat */}
-        <div className="flex-row w-full h-auto border-2 border-green-500 md:hidden">
+        <div className="flex flex-row w-full h-auto border-2 border-green-500 md:hidden">
           <div className="flex-col w-1/2 h-auto border-2 border-green-500 md:hidden">
             <p className="text-white"> Title </p>
           </div>
           <div className="flex-col w-1/2 h-auto border-2 border-green-500 md:hidden">
             <p className="text-white"> Buttons </p>
           </div>
-          <div className="flex-row w-full h-auto border-2 border-green-500 md:hidden">
+        </div>
+        <div className="flex-row w-full h-auto border-2 border-green-500 md:hidden">
             <p className="text-white"> History </p>
           </div>
-        </div>
         <Playmat />
       </div>
     </div>

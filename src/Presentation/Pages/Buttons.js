@@ -3,16 +3,12 @@ import histogram from "./histogram.svg";
 
 function Buttons() {
   return (
-    <div className="flex flex-row border-2 border-red-500 space-x-10 p-12">
-      <button className="h-[300px] w-[300px] bg-[#05a895] m-3 rounded-[20px]">
-        <img className="h-[200px] w-[200px]" src={console} alt="Console Icon" />
+    <div className="flex flex-row border-2 border-red-500 items-center justify-center">
+      <button className="h-auto w-fit bg-[#05a895] rounded-[20px] p-3 m-2">
+        <img width={100} height={100} className="" src={console} alt="Console Icon" />
       </button>
-      <button className="h-[200px] w-[200px]bg-[#05a895] m-3 rounded-[20px]">
-        <img
-          className="h-[200px] w-[200px]"
-          src={histogram}
-          alt="Histogram Icon"
-        />
+      <button className="h-auto w-fit bg-[#05a895] rounded-[20px] p-3 m-2">
+        <img width={100} height={100} className="" src={histogram} alt="Histogram Icon" />
       </button>
     </div>
   );
