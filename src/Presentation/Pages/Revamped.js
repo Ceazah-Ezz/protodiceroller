@@ -17,15 +17,15 @@ function Revamped() {
   // Have yet to get assets - in Gdrive
   return (
     <div className="flex bg-[#011f3f]">
-      <div className="hidden md:flex flex-col w-2/5 h-screen border-2 border-blue-500 px-3 py-5">
+      <div className="hidden md:flex flex-col w-2/5 h-screen px-6 py-8">
         <HowTo />
         <Buttons />
         <History />
       </div>
 
-      <div className="flex-col w-full h-screen border-2 border-blue-500">
+      <div className="flex-col w-full h-screen">
         {/* Title */}
-        <div className="hidden md:flex flex-row h-auto border-2 border-red-500 justify-center items-center p-2">
+        <div className="hidden md:flex flex-row h-auto justify-center items-center p-2">
           <h1 className="text-white text-8xl font-bold">DICE ROLLER</h1>
         </div>
 

@@ -2,7 +2,7 @@
 
 function HowTo() {
     return(
-        <div className="flex-row border-2 border-red-500">
+        <div className="flex-row">
           <div className="p-3 h-fit bg-gray-500 rounded-[20px] text-white">
             <h2 className="text-white text-4xl font-bold">HOW TO PLAY</h2>
             <hr></hr>
