@@ -1,15 +1,15 @@
-import { useContext, useRef } from "react";
-
-import playmat from "./SpiritTray.png";
-import playmatrotated from "./SpiritTrayRotated.png";
+import { useContext, useRef, useState } from "react";
 import { DieContext } from "../Context/DieContext";
 import { DieSkinContext } from "../Context/DieSkinContext";
 import DieComponent from "../Components/DieComponent";
 import cycle from "./cycle-svgrepo-com.svg";
-
 import "./Revamped.css";
+import playmat from "../Pages/SpiritTray.png";
+import playmatrotated from "./SpiritTrayRotated.png";
+import d20 from "./d20.svg"
 
 function Playmat() {
+  const [showSkins, setShowSkins] = useState(false);
   const { dice, handleAddDie, handleRemoveDie, handleRollDice } =
     useContext(DieContext);
   const { dieSkin } = useContext(DieSkinContext);
@@ -22,12 +22,16 @@ function Playmat() {
     handleRollDice();
   };
 
+  const toggleSkins = () => {
+    setShowSkins(prev => !prev);
+  };
+
   return (
     <>
-      <div className="flex flex-row w-full h-auto justify-center items-center">
+      <div className="flex flex-row w-full h-fit justify-center items-center">
         {/* Playmat Image */}
-        <div className="hidden md:flex">
-          <div className="absolute flex-row left-[775px] bottom-1/3">
+        <div className="hidden md:grid grid-cols-9 bg-contain bg-center w-full h-[725px] bg-no-repeat "  style={{ backgroundImage: `url(${playmat})` }}>
+          <div className="flex flex-col col-span-1 col-start-3  p-5 items-center place-content-center place-items-center">
             <DieComponent
               dieSkin={dieSkin}
               dieType={4}
@@ -71,8 +75,8 @@ function Playmat() {
               }}
             />
           </div>
-          <div className="absolute left-1/2 top-[225px] break-all overflow-hidden">
-            <div className="flex flex-wrap w-[600px] h-auto">
+          <div className="flex-col col-span-3 break-all overflow-hidden  py-32 px-20">
+            <div className="flex flex-wrap w-auto h-auto">
               {dice.map((die, index) => {
                 return (
                   <DieComponent
@@ -90,7 +94,13 @@ function Playmat() {
               })}
             </div>
           </div>
-          <img src={playmat} alt="PlayMat" className="w-full h-full" />
+          <div className="flex-col col-span-1 "></div>
+          <div className="flex-col col-span-2  p-3">
+            <div className="rounded-md bg-[#c23838] w-full h-full text-white p-2">
+              HISTORY
+            </div>
+          </div>
+          {/* <img src={playmat} alt="PlayMat" className="w-full h-full" /> */}
         </div>
 
         <div className="flex flex-row md:hidden">
@@ -101,16 +111,15 @@ function Playmat() {
           />
         </div>
       </div>
-      <div className="hidden md:flex flex-row w-full justify-end py-2 px-20">
-        <div className=" bg-[#05a895] p-3 rounded-md w-[100px] h-auto "></div>
-        <button className="bg-[#05a895] p-2 m-2 rounded-md">
+      <div className="hidden md:flex flex-row w-full justify-end py-2 px-4 items-center">
+        {showSkins && (
+        <div className="bg-[#c23838] p-3 rounded-md w-40 h-auto text-white">SKINS</div>
+        )}
+        <button className="bg-[#c23838] p-2 m-2 rounded-md h-fit" onClick={toggleSkins}>
           <img width={25} height={25} src={cycle} />
         </button>
-        <button
-          className="bg-[#05a895] p-4 rounded-md text-white"
-          onClick={rollAllDice}
-        >
-          ROLL!
+        <button className="bg-[#c23838] p-7 rounded-md text-white"onClick={rollAllDice}>
+          <img width={40} height={40} src={d20} />
         </button>
       </div>
     </>
