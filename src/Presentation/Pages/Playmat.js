@@ -31,7 +31,12 @@ function Playmat() {
       <div className="flex flex-row w-full h-fit justify-center items-center">
         {/* Playmat Image */}
         <div className="hidden md:grid grid-cols-9 bg-contain bg-center w-full h-[725px] bg-no-repeat "  style={{ backgroundImage: `url(${playmat})` }}>
-          <div className="flex flex-col col-span-1 col-start-3  p-5 items-center place-content-center place-items-center">
+          <div className="flex-col col-span-2 p-3">
+            <div className="rounded-md bg-[#c23838] w-full h-full text-white p-2">
+              HISTORY
+            </div>
+          </div>
+          <div className="flex flex-col col-span-1 p-5 items-center place-content-center place-items-center">
             <DieComponent
               dieSkin={dieSkin}
               dieType={4}
@@ -95,11 +100,7 @@ function Playmat() {
             </div>
           </div>
           <div className="flex-col col-span-1 "></div>
-          <div className="flex-col col-span-2  p-3">
-            <div className="rounded-md bg-[#c23838] w-full h-full text-white p-2">
-              HISTORY
-            </div>
-          </div>
+          
           {/* <img src={playmat} alt="PlayMat" className="w-full h-full" /> */}
         </div>
 
