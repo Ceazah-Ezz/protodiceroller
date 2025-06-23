@@ -1,6 +1,6 @@
-import console from "./console-controller.svg";
-import histogram from "./histogram.svg";
-import information from "./information.svg";
+import console from "../../Assets/console-controller.svg";
+import histogram from "../../Assets/histogram.svg";
+import information from "../../Assets/information.svg";
 import "./Buttons.css";
 
 function Buttons({ onInfoClick }) {

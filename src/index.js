@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import App from "./Presentation/Pages/App";
 import Revamped from "./Presentation/Pages/Revamped";
 import reportWebVitals from "./reportWebVitals";
 import DieProvider from "./Presentation/Context/DieProvider";

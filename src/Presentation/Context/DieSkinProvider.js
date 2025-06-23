@@ -5,6 +5,10 @@ import "../Pages/Revamped.css";
 export default function DieSkinProvider({ children }) {
   const [dieSkin, setDieSkin] = useState(new BaseDieSkin());
 
+  const changeDieSkin = () => {
+    
+  }
+
   return (
     <DieSkinContext.Provider value={{ dieSkin, setDieSkin }}>
       {children}

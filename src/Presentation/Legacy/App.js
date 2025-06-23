@@ -4,7 +4,7 @@ import "./App.css";
 import { useState } from "react";
 import { useDices } from "../../Application/Dices";
 import { useGamemodes } from "../../Application/Gamemodes";
-import AlertBox from "../Components/AlertBox";
+import AlertBox from "../../Components/AlertBox";
 
 //Button Designs
 import Button_Y from "../../Assets/DiceImg/Button_Y.png";

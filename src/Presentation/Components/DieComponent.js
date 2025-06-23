@@ -10,11 +10,7 @@ const DieComponent = forwardRef(function DieComponent(
   { die, dieSkin, onRemove = () => {}, dieType, onAdd = () => {} },
   ref
 ) {
-  const [currentDieFace, setDieFace] = useState(null);
-  const [isRolling, setIsRolling] = useState(false);
-
   let renderDieType = dieType !== undefined ? dieType : die.getFaceCount();
-
   const dieAssets = useMemo(() => {
     switch (renderDieType) {
       case 4:
@@ -33,6 +29,9 @@ const DieComponent = forwardRef(function DieComponent(
         return dieSkin.getD20Assets();
     }
   }, [renderDieType, dieSkin]);
+
+  const [currentDieFace, setDieFace] = useState(dieAssets[0]);
+  const [isRolling, setIsRolling] = useState(false);
 
   useEffect(() => {
     setDieFace(dieAssets[0]);
