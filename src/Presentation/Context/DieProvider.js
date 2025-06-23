@@ -30,6 +30,10 @@ export default function DieProvider({ children }) {
     setDice(updatedDice);
   };
 
+  const handleResetDice = () => {
+    setDice();
+  };
+
   return (
     <DieContext.Provider
       value={{
