@@ -7,10 +7,8 @@ import "./Revamped.css";
 import playmat from "../../Assets/SpiritTray.png";
 import playmatrotated from "../../Assets/SpiritTrayRotated.png";
 import d20 from "../../Assets/d20.svg";
-import SkinSelection from "./SkinSelection";
 
 function Playmat() {
-  const [showSkins, setShowSkins] = useState(false);
   const { dice, handleAddDie, handleRemoveDie, handleRollDice } =
     useContext(DieContext);
   const { dieSkin } = useContext(DieSkinContext);
@@ -23,10 +21,6 @@ function Playmat() {
     handleRollDice();
   };
 
-  const toggleSkins = () => {
-    setShowSkins((prev) => !prev);
-  };
-
   return (
     <>
       <div className="flex flex-row w-full h-fit justify-center items-center">
@@ -36,9 +30,21 @@ function Playmat() {
           style={{ backgroundImage: `url(${playmat})` }}
         >
           <div className="flex-col col-span-2 p-3">
-            <div className="rounded-md bg-[#c23838] w-full h-full text-white p-2">
-              HISTORY
+            <div className="flex flex-col rounded-md bg-[#c23838] w-full h-5/6 text-white p-2 m-1 drop-shadow-lg">
+              <div className="flex flex-row w-full h-auto p-3 justify-center text-[30px]">THEMES</div>
+              <div className="grid grid-cols-2 grid-rows-3 w-full h-full p-3 items-center place-items-center">
+                <button className="bg-gray-200 w-32 h-32 rounded-md text-black">theme 1</button>
+                <button className="bg-blue-200 w-32 h-32 rounded-md text-black">theme 2</button>
+                <button className="bg-yellow-200 w-32 h-32 rounded-md text-black">theme 3</button>
+              </div>
             </div>
+            <button
+              className="bg-[#c23838] p-9 rounded-md h-1/6 text-white m-1 drop-shadow-lg"
+              onClick={rollAllDice}
+            >
+              <img width={40} height={40} src={d20} alt="Roll Dice" />
+              ROLL
+            </button>
           </div>
           <div className="flex flex-col col-span-1 p-5 items-center place-content-center place-items-center">
             <DieComponent
@@ -103,7 +109,15 @@ function Playmat() {
               })}
             </div>
           </div>
-          <div className="flex-col col-span-1 "></div>
+          <div className="col-span-1"></div>
+          <div className="flex-col col-span-2 p-3">
+            <div className="flex flex-col rounded-md bg-[#c23838] w-full h-full text-white p-2 drop-shadow-lg">
+              <div className="flex flex-row w-full h-auto p-3 justify-center text-[30px]">HISTORY</div>
+              <div className="flex flex-row w-full h-full p-3">
+              </div>
+            </div>
+            
+          </div>
 
           {/* <img src={playmat} alt="PlayMat" className="w-full h-full" /> */}
         </div>
@@ -115,21 +129,6 @@ function Playmat() {
             className="w-[400px] h-auto p-3"
           />
         </div>
-      </div>
-      <div className="hidden md:flex flex-row w-full justify-end py-2 px-4 items-center">
-        {showSkins && <SkinSelection />}
-        <button
-          className="bg-[#c23838] p-2 m-2 rounded-md h-fit"
-          onClick={toggleSkins}
-        >
-          <img width={25} height={25} src={cycle} alt="Change Skin" />
-        </button>
-        <button
-          className="bg-[#c23838] p-7 rounded-md text-white"
-          onClick={rollAllDice}
-        >
-          <img width={40} height={40} src={d20} alt="Roll Dice" />
-        </button>
       </div>
     </>
   );

@@ -22,7 +22,7 @@ function Revamped() {
     <div className="flex bg-[#0e102c] h-screen">
       <div className="flex-col w-full h-full ">
         {/* Title */}
-        <div className="hidden md:grid grid-cols-3 h-auto items-center justify-between p-2">
+        <div className="hidden md:grid grid-cols-3 h-auto items-center justify-between p-5">
           <div></div>
           <div className="flex justify-center">
             <h1 className="text-white text-8xl font-bold ">DICE ROLLER</h1>
