@@ -1,3 +1,95 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.theme-default {
+  --theme-primary: #c23838;
+  --theme-text: white;
+  --theme-bg: #0e102c;
+}
+
+.theme-ocean {
+  --theme-primary: #3b82f6;
+  --theme-text: white;
+  --theme-bg: #146264;
+}
+
+.theme-sand {
+  --theme-primary: #facc15;
+  --theme-text: black;
+  --theme-bg: #fffbea;
+}
+
+.themes-container,
+.history-container,
+.roll-button {
+  background-color: var(--theme-primary);
+  color: var(--theme-text);
+}
+
+.screen-container{
+    @apply flex bg-[#0e102c] h-screen transition;
+    background-color: var(--theme-bg);
+}
+.screen-container .page-container{
+    @apply flex-col w-full h-full;
+}
+.screen-container .page-container .header-container{
+    @apply hidden md:grid grid-cols-3 h-auto items-center justify-between p-5;
+}
+.screen-container .page-container .header-container .title{
+    @apply flex justify-center;
+}
+.screen-container .page-container .header-container .title .title-text{
+    @apply text-white text-8xl font-bold;
+    color: var(--theme-text);
+}
+.screen-container .page-container .header-container .button-container{
+    @apply flex justify-end items-center;
+}
+
+.playmat-container{
+    @apply flex flex-row w-full h-fit justify-center items-center;
+}
+.playmat-container .playmat-background-container{
+    @apply hidden md:grid grid-cols-9 bg-contain bg-center w-full h-[725px] bg-no-repeat;
+}
+.playmat-container .playmat-background-container .column-one{
+    @apply flex-col col-span-2 p-3;
+}
+.playmat-container .playmat-background-container .column-one .themes-container{
+    @apply flex flex-col rounded-md w-full h-5/6 text-white p-2 m-1 drop-shadow-lg transition;
+}
+.playmat-container .playmat-background-container .column-one .themes-container .themes-title{
+    @apply flex flex-row w-full h-auto p-3 justify-center text-[30px];
+}
+.playmat-container .playmat-background-container .column-one .themes-select{
+    @apply grid grid-cols-2 grid-rows-3 w-full h-full p-3 items-center place-items-center;
+}
+.playmat-container .playmat-background-container .column-one .themes-select .theme-button{
+    @apply w-32 h-32 rounded-md text-black hover:scale-105 transition;
+}
+.playmat-container .playmat-background-container .column-one .roll-button{
+    @apply p-9 rounded-md h-1/6 text-white m-1 drop-shadow-lg transition;
+}
+.playmat-container .playmat-background-container .dice-container{
+    @apply flex flex-col col-span-1 p-5 items-center place-content-center place-items-center;
+}
+.playmat-container .playmat-background-container .column-two{
+    @apply flex-col col-span-3 break-all overflow-hidden py-32 px-20;
+}
+.playmat-container .playmat-background-container .column-two .display-dice-container{
+    @apply flex flex-wrap w-auto h-auto;
+}
+.playmat-container .playmat-background-container .column-three{
+    @apply flex-col col-span-2 p-3;
+}
+.playmat-container .playmat-background-container .column-three .history-container{
+    @apply flex flex-col rounded-md w-full h-full text-white p-2 drop-shadow-lg transition;
+}
+.playmat-container .playmat-background-container .column-three .history-container .history-title{
+    @apply flex flex-row w-full h-auto p-3 justify-center text-[30px];
+}
+.playmat-container .playmat-background-container .column-three .history-container .history-details{
+    @apply flex flex-row w-full h-full p-3;
+}

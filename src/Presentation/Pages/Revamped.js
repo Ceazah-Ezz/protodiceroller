@@ -1,33 +1,24 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import HowTo from "./HowTo";
 import Buttons from "./Buttons";
-import History from "./History";
 import Playmat from "./Playmat";
+import { ThemeContext } from "../Context/ThemeContext";
 import "./Revamped.css";
 
 function Revamped() {
-  // Temporary file to not interfere with the current app
-  // Will turn some into components once they're okay
-  // Will re-organize assets into separate folder
-  // To-Do:
-  // Not yet responsive
-  // Dice options
-  // Dice options functionality - Rikku?
-  // Roll button and Arrow button - DONE
-  // Roll and Arrow button Sizing
-  // Have yet to get assets - in Gdrive
   const [showModal, setShowModal] = useState(false);
+  const { themeName } = useContext(ThemeContext);
 
   return (
-    <div className="flex bg-[#0e102c] h-screen">
-      <div className="flex-col w-full h-full ">
+    <div className={`screen-container theme-${themeName}`}>
+      <div className="page-container">
         {/* Title */}
-        <div className="hidden md:grid grid-cols-3 h-auto items-center justify-between p-5">
+        <div className="header-container">
           <div></div>
-          <div className="flex justify-center">
-            <h1 className="text-white text-8xl font-bold ">DICE ROLLER</h1>
+          <div className="title">
+            <h1 className={`title-text theme-${themeName}`}>DICE ROLLER</h1>
           </div>
-          <div className="flex justify-end items-center">
+          <div className="button-container">
             <Buttons onInfoClick={() => setShowModal(true)} />
           </div>
         </div>

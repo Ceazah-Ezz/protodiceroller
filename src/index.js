@@ -6,15 +6,19 @@ import reportWebVitals from "./reportWebVitals";
 import DieProvider from "./Presentation/Context/DieProvider";
 import DieSkinProvider from "./Presentation/Context/DieSkinProvider";
 import "./Presentation/Pages/Revamped.css";
+import { ThemeProvider } from "./Presentation/Context/ThemeContext";
+
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <DieSkinProvider>
-      <DieProvider>
-        <Revamped />
-      </DieProvider>
-    </DieSkinProvider>
+      <DieSkinProvider>
+        <DieProvider>
+          <ThemeProvider>
+            <Revamped />
+          </ThemeProvider>
+        </DieProvider>
+      </DieSkinProvider>
   </React.StrictMode>
 );
 

@@ -1,18 +1,22 @@
-import { useContext, useRef, useState } from "react";
+import { useContext, useRef } from "react";
 import { DieContext } from "../Context/DieContext";
 import { DieSkinContext } from "../Context/DieSkinContext";
+import { ThemeContext } from "../Context/ThemeContext";
 import DieComponent from "../Components/DieComponent";
-import cycle from "../../Assets/cycle-svgrepo-com.svg";
 import "./Revamped.css";
 import playmat from "../../Assets/SpiritTray.png";
 import playmatrotated from "../../Assets/SpiritTrayRotated.png";
 import d20 from "../../Assets/d20.svg";
+import themes from "../Context/themes";
 
 function Playmat() {
   const { dice, handleAddDie, handleRemoveDie, handleRollDice } =
     useContext(DieContext);
   const { dieSkin } = useContext(DieSkinContext);
   const dieRollRef = useRef([]);
+  
+  const { themeName, setThemeName } = useContext(ThemeContext);
+  const theme = themes[themeName];
 
   const rollAllDice = () => {
     dieRollRef.current.forEach((ref) => {
@@ -23,30 +27,30 @@ function Playmat() {
 
   return (
     <>
-      <div className="flex flex-row w-full h-fit justify-center items-center">
+      <div className="playmat-container">
         {/* Playmat Image */}
         <div
-          className="hidden md:grid grid-cols-9 bg-contain bg-center w-full h-[725px] bg-no-repeat "
-          style={{ backgroundImage: `url(${playmat})` }}
+          className="playmat-background-container"
+          style={{ backgroundImage: `url(${theme.backgroundImage})` }}
         >
-          <div className="flex-col col-span-2 p-3">
-            <div className="flex flex-col rounded-md bg-[#c23838] w-full h-5/6 text-white p-2 m-1 drop-shadow-lg">
-              <div className="flex flex-row w-full h-auto p-3 justify-center text-[30px]">THEMES</div>
-              <div className="grid grid-cols-2 grid-rows-3 w-full h-full p-3 items-center place-items-center">
-                <button className="bg-gray-200 w-32 h-32 rounded-md text-black">theme 1</button>
-                <button className="bg-blue-200 w-32 h-32 rounded-md text-black">theme 2</button>
-                <button className="bg-yellow-200 w-32 h-32 rounded-md text-black">theme 3</button>
+          <div className="column-one">
+            <div className="themes-container">
+              <div className="themes-title">THEMES</div>
+              <div className="themes-select">
+                <button className="bg-gray-200 theme-button" onClick={() => setThemeName("default")}>theme 1</button>
+                <button className="bg-blue-200 theme-button" onClick={() => setThemeName("ocean")}>theme 2</button>
+                <button className="bg-yellow-200 theme-button" onClick={() => setThemeName("sand")}>theme 3</button>
               </div>
             </div>
             <button
-              className="bg-[#c23838] p-9 rounded-md h-1/6 text-white m-1 drop-shadow-lg"
+              className="roll-button"
               onClick={rollAllDice}
             >
               <img width={40} height={40} src={d20} alt="Roll Dice" />
               ROLL
             </button>
           </div>
-          <div className="flex flex-col col-span-1 p-5 items-center place-content-center place-items-center">
+          <div className="dice-container">
             <DieComponent
               dieSkin={dieSkin}
               dieType={4}
@@ -90,8 +94,8 @@ function Playmat() {
               }}
             />
           </div>
-          <div className="flex-col col-span-3 break-all overflow-hidden  py-32 px-20">
-            <div className="flex flex-wrap w-auto h-auto">
+          <div className="column-two">
+            <div className="display-dice-container">
               {dice.map((die, index) => {
                 return (
                   <DieComponent
@@ -110,17 +114,15 @@ function Playmat() {
             </div>
           </div>
           <div className="col-span-1"></div>
-          <div className="flex-col col-span-2 p-3">
-            <div className="flex flex-col rounded-md bg-[#c23838] w-full h-full text-white p-2 drop-shadow-lg">
-              <div className="flex flex-row w-full h-auto p-3 justify-center text-[30px]">HISTORY</div>
-              <div className="flex flex-row w-full h-full p-3">
-              </div>
+          <div className="column-three">
+            <div className="history-container">
+              <div className="history-title">HISTORY</div>
+              <div className="history-details"></div>
             </div>
-            
           </div>
-
-          {/* <img src={playmat} alt="PlayMat" className="w-full h-full" /> */}
         </div>
+
+        {/* Responsive Code
 
         <div className="flex flex-row md:hidden">
           <img
@@ -128,7 +130,7 @@ function Playmat() {
             alt="PlayMat Rotated"
             className="w-[400px] h-auto p-3"
           />
-        </div>
+        </div> */}
       </div>
     </>
   );

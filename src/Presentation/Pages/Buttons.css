@@ -5,5 +5,7 @@
 }
 
 .button-container button {
-  @apply h-auto w-fit bg-[#c23838] rounded-[20px] p-3 m-2;
+  @apply h-auto w-fit rounded-[20px] p-3 m-2 hover:scale-105 transition;
+  background-color: var(--theme-primary);
+  color: var(--theme-text);
 }
