@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { DieContext } from "./DieContext";
-import Die from "../../Application/Objects/Die";
+import Die from "../../Domain/Objects/Die";
 import "../Pages/Revamped.css";
 
 export default function DieProvider({ children }) {
@@ -42,6 +42,7 @@ export default function DieProvider({ children }) {
         handleAddDie,
         handleRemoveDie,
         handleRollDice,
+        handleResetDice,
       }}
     >
       {children}

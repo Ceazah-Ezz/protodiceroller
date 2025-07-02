@@ -1,4 +1,4 @@
-import DieSkin from "../../../Application/Objects/DieSkin";
+import DieSkin from "../../../Domain/Objects/DieSkin";
 
 import { BaseD4 } from "./D4/BaseD4";
 import { BaseD6 } from "./D6/BaseD6";

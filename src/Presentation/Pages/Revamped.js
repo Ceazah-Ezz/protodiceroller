@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
-import HowTo from "./HowTo";
-import Buttons from "./Buttons";
-import Playmat from "./Playmat";
+import HowTo from "../Components/HowTo";
+import Buttons from "../Components/Buttons";
+import Playmat from "../Components/Playmat";
 import { ThemeContext } from "../Context/ThemeContext";
 import "./Revamped.css";
 
