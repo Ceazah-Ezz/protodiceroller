@@ -15,11 +15,11 @@ const DieComponent = forwardRef(function DieComponent(
   const { getDieAssets } = useContext(DieSkinContext);
 
   const isStatic = dieType !== undefined;
-  let renderDieType = die ? die.getFaceCount() : dieType;
+  let renderDieType = die !== undefined ? die.getFaceCount() : dieType;
 
   const dieAssets = useMemo(() => {
-    return getDieAssets(dieType);
-  }, [dieType, getDieAssets]);
+    return getDieAssets(renderDieType);
+  }, [renderDieType, getDieAssets]);
 
   const [currentDieFace, setCurrentDieFace] = useState(() => dieAssets?.[0]);
   const [isRolling, setIsRolling] = useState(false);
@@ -68,7 +68,7 @@ const DieComponent = forwardRef(function DieComponent(
 
   return (
     <img
-      className="relative w-12 h-12 cursor-pointer"
+      className="relative w-16 h-16 cursor-pointer"
       src={currentDieFace}
       alt={`D${renderDieType}`}
       onClick={() => {
