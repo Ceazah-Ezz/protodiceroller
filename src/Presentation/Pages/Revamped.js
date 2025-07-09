@@ -3,6 +3,7 @@ import HowTo from "../Components/HowTo";
 import Buttons from "../Components/Buttons";
 import Playmat from "../Components/Playmat";
 import { ThemeContext } from "../Context/ThemeContext";
+import HaloHaloLogo from "../../Assets/HaloHaloApp.png"
 import "./Revamped.css";
 
 function Revamped() {
@@ -14,7 +15,9 @@ function Revamped() {
       <div className="page-container">
         {/* Title */}
         <div className="header-container">
-          <div></div>
+          <div>
+            <img width={100} height={100} src={HaloHaloLogo} alt="Halo Halo Logo" className="mx-2"/>
+          </div>
           <div className="title">
             <h1 className={`title-text theme-${themeName}`}>DICE ROLLER</h1>
           </div>

@@ -37,22 +37,22 @@ function Playmat() {
               <div className="themes-title">THEMES</div>
               <div className="themes-select">
                 <button
-                  className="bg-gray-200 theme-button"
+                  className="bg-red-200 theme-button"
                   onClick={() => setThemeName("default")}
                 >
-                  theme 1
+                  DUNGEON
                 </button>
                 <button
                   className="bg-blue-200 theme-button"
                   onClick={() => setThemeName("ocean")}
                 >
-                  theme 2
+                  OCEAN
                 </button>
                 <button
                   className="bg-yellow-200 theme-button"
                   onClick={() => setThemeName("sand")}
                 >
-                  theme 3
+                  SAND
                 </button>
               </div>
             </div>

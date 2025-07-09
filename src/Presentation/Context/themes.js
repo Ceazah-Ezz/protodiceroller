@@ -12,7 +12,7 @@ const themes = {
   },
   sand: {
     name: "sand",
-    backgroundImage: testtray,
+    backgroundImage: defaultBG,
   },
 };
 

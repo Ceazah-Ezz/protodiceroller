@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base{
+    @font-face {
+        font-family: TWBOZ;
+        src: url("../../Assets/TheWildBreathOfZelda-15Lv.ttf");
+    }
+}
+
 .theme-default {
   --theme-primary: #c23838;
   --theme-text: white;
@@ -16,8 +23,8 @@
 
 .theme-sand {
   --theme-primary: #facc15;
-  --theme-text: black;
-  --theme-bg: #fffbea;
+  --theme-text: white;
+  --theme-bg: #4F3E04;
 }
 
 .themes-container,
@@ -41,7 +48,7 @@
     @apply flex justify-center;
 }
 .screen-container .page-container .header-container .title .title-text{
-    @apply text-white text-8xl font-bold;
+    @apply text-white text-8xl font-[TWBOZ];
     color: var(--theme-text);
 }
 .screen-container .page-container .header-container .button-container{
@@ -61,16 +68,16 @@
     @apply flex flex-col rounded-md w-full h-5/6 text-white p-2 m-1 drop-shadow-lg transition;
 }
 .playmat-container .playmat-background-container .column-one .themes-container .themes-title{
-    @apply flex flex-row w-full h-auto p-3 justify-center text-[30px];
+    @apply flex flex-row w-full h-auto p-3 justify-center text-[30px] font-[TWBOZ];
 }
 .playmat-container .playmat-background-container .column-one .themes-select{
     @apply grid grid-cols-2 grid-rows-3 w-full h-full p-3 items-center place-items-center;
 }
 .playmat-container .playmat-background-container .column-one .themes-select .theme-button{
-    @apply w-32 h-32 rounded-md text-black hover:scale-105 transition;
+    @apply w-32 h-32 rounded-md text-black hover:scale-105 transition font-[TWBOZ];
 }
 .playmat-container .playmat-background-container .column-one .roll-button{
-    @apply p-9 rounded-md h-1/6 text-white m-1 drop-shadow-lg transition;
+    @apply p-9 w-full rounded-md h-1/6 text-white m-1 drop-shadow-lg transition font-[TWBOZ] place-items-center;
 }
 .playmat-container .playmat-background-container .dice-container{
     @apply flex flex-col col-span-1 p-5 items-center place-content-center place-items-center;
@@ -88,7 +95,7 @@
     @apply flex flex-col rounded-md w-full h-full text-white p-2 drop-shadow-lg transition;
 }
 .playmat-container .playmat-background-container .column-three .history-container .history-title{
-    @apply flex flex-row w-full h-auto p-3 justify-center text-[30px];
+    @apply flex flex-row w-full h-auto p-3 justify-center text-[30px] font-[TWBOZ];
 }
 .playmat-container .playmat-background-container .column-three .history-container .history-details{
     @apply flex flex-row w-full h-full p-3;
