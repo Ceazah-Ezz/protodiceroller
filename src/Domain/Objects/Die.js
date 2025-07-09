@@ -1,26 +1,26 @@
 class Die {
-  constructor(faceCount = 20) {
-    if (!Number.isInteger(faceCount)) {
+  constructor(dieType = 20) {
+    if (!Number.isInteger(dieType)) {
       throw new TypeError("faceCount must be an Integer!");
     }
-    this.faceCount = faceCount;
+    this.dieType = dieType;
     this.dieValue = 0;
   }
 
-  getFaceCount() {
-    return this.faceCount;
+  getDieType() {
+    return this.dieType;
   }
   getDieValue() {
     return this.dieValue;
   }
 
   roll() {
-    switch (this.faceCount) {
+    switch (this.dieType) {
       case 100:
-        this.dieValue = Math.floor((Math.random() * this.faceCount) % 10);
+        this.dieValue = Math.floor((Math.random() * this.dieType) % 10);
         break;
       default:
-        this.dieValue = Math.floor(Math.random() * this.faceCount);
+        this.dieValue = Math.floor(Math.random() * this.dieType);
         break;
     }
   }

@@ -15,7 +15,7 @@ const DieComponent = forwardRef(function DieComponent(
   const { getDieAssets } = useContext(DieSkinContext);
 
   const isStatic = dieType !== undefined;
-  let renderDieType = die !== undefined ? die.getFaceCount() : dieType;
+  let renderDieType = die !== undefined ? die.getDieType() : dieType;
 
   const dieAssets = useMemo(() => {
     return getDieAssets(renderDieType);
