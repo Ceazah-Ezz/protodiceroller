@@ -1,81 +1,46 @@
-import {
-  useState,
-  useEffect,
-  useMemo,
-  forwardRef,
-  useImperativeHandle,
-  useContext,
-} from "react";
-import { DieSkinContext } from "../Context/DieSkinContext";
+import { useMemo } from "react";
+import { useDiceRenderer } from "../Hooks/useDiceRenderer";
+import { useDieSkinHandler } from "../Hooks/useDieSkinHandler";
 
-const DieComponent = forwardRef(function DieComponent(
-  { die, dieType, onRemove = () => {}, onAdd = () => {} },
-  ref
-) {
-  const { getDieAssets } = useContext(DieSkinContext);
-
-  const isStatic = dieType !== undefined;
-  let renderDieType = die !== undefined ? die.getDieType() : dieType;
-
-  const dieAssets = useMemo(() => {
-    return getDieAssets(renderDieType);
-  }, [renderDieType, getDieAssets]);
-
-  const [currentDieFace, setCurrentDieFace] = useState(() => dieAssets?.[0]);
-  const [isRolling, setIsRolling] = useState(false);
-
-  useEffect(() => {
-    if (dieAssets?.length) {
-      setCurrentDieFace(dieAssets[0]);
-    }
-  }, [dieAssets]);
-
-  const rollDie = () => {
-    if (isRolling || !dieAssets?.length) return;
-    setIsRolling(true);
-    let faceImgs = dieAssets.slice(0, -3);
-    let cornerImgs = dieAssets.slice(-3);
-    let counter = 0;
-
-    const rollInterval = setInterval(() => {
-      const randomCorner = () =>
-        cornerImgs[Math.floor(Math.random() * cornerImgs.length)];
-      const randomFace = () => {
-        const rollIndex = Math.floor(Math.random() * renderDieType);
-        return renderDieType === 100
-          ? faceImgs[rollIndex % 10]
-          : faceImgs[rollIndex];
-      };
-
-      setCurrentDieFace(counter % 2 === 0 ? randomCorner() : randomFace());
-      counter++;
-
-      if (counter >= 16) {
-        clearInterval(rollInterval);
-        setIsRolling(false);
-        setCurrentDieFace(faceImgs[die.getDieValue()]);
-      }
-    }, 200);
-  };
-
-  const handleClick = () => {
-    isStatic ? onAdd() : onRemove();
-  };
-
-  useImperativeHandle(ref, () => ({
-    rollDie,
-  }));
-
-  return (
-    <img
-      className="relative w-16 h-16 cursor-pointer"
-      src={currentDieFace}
-      alt={`D${renderDieType}`}
-      onClick={() => {
-        handleClick();
-      }}
-    />
-  );
-});
-
-export default DieComponent;
+export default function DieComponent({ dieType, onDieClick = () => {} }) {
+  const { currentDieFaces, updateDieFaces } = useDiceRenderer();
+  const { getDieAssets } = useDieSkinHandler();
+  const isStatic = !!dieType;
+  const staticDieFace = useMemo(() => {
+    const dieAssets = getDieAssets(dieType);
+    return dieAssets[0];
+  }, [getDieAssets, dieType]);
+  console.log(currentDieFaces);
+  if (isStatic) {
+    return (
+      <img
+        className="relative w-16 h-16 cursor-pointer"
+        src={staticDieFace}
+        alt={`D${dieType}`}
+        onClick={() => {
+          onDieClick();
+          updateDieFaces();
+        }}
+      />
+    );
+  } else {
+    return (
+      <div>
+        {currentDieFaces.map(([dieFace, dieType], index) => {
+          return (
+            <img
+              key={index}
+              className="relative w-16 h-16 cursor-pointer"
+              src={dieFace}
+              alt={`D${dieType}`}
+              onClick={() => {
+                onDieClick(index);
+                updateDieFaces();
+              }}
+            />
+          );
+        })}
+      </div>
+    );
+  }
+}

@@ -2,11 +2,12 @@ import { useState } from "react";
 import Die from "../../Domain/Objects/Die";
 export function useDiceHandler() {
   const [dice, setDice] = useState([new Die(20)]);
-  const [isRolling, setIsRolling] = useState(false);
 
   const handleAddDie = (dieType) => {
     const newDie = new Die(dieType);
+    console.log("Adding d" + dieType);
     setDice([...dice, newDie]);
+    console.log(dice);
   };
   const handleRemoveDie = (index) => {
     const newDieArray = [...dice];
@@ -15,7 +16,6 @@ export function useDiceHandler() {
   };
 
   const handleRollDice = () => {
-    setIsRolling(true);
     const updatedDice = dice.map((die) => {
       die.roll();
 
@@ -25,7 +25,6 @@ export function useDiceHandler() {
       );
       return clonedDie;
     });
-    setIsRolling(false);
     setDice(updatedDice);
   };
 
@@ -35,7 +34,6 @@ export function useDiceHandler() {
 
   return {
     dice,
-    isRolling,
     handleAddDie,
     handleRemoveDie,
     handleRollDice,

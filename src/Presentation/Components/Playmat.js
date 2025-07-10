@@ -7,11 +7,11 @@ import playmat from "../../Assets/SpiritTray.png";
 import playmatrotated from "../../Assets/SpiritTrayRotated.png";
 import d20 from "../../Assets/d20.svg";
 import themes from "../Context/themes";
+import { useDiceRenderer } from "../Hooks/useDiceRenderer";
 
 function Playmat() {
-  const { dice, handleAddDie, handleRemoveDie, handleRollDice } =
+  const { handleAddDie, handleRemoveDie, handleRollDice } =
     useContext(DieContext);
-
   const dieRollRef = useRef([]);
 
   const { themeName, setThemeName } = useContext(ThemeContext);
@@ -64,57 +64,50 @@ function Playmat() {
           <div className="dice-container">
             <DieComponent
               dieType={4}
-              onAdd={() => {
+              onDieClick={() => {
                 handleAddDie(4);
               }}
             />
             <DieComponent
               dieType={6}
-              onAdd={() => {
+              onDieClick={() => {
                 handleAddDie(6);
               }}
             />
             <DieComponent
               dieType={8}
-              onAdd={() => {
+              onDieClick={() => {
                 handleAddDie(8);
               }}
             />
             <DieComponent
               dieType={12}
-              onAdd={() => {
+              onDieClick={() => {
                 handleAddDie(12);
               }}
             />
             <DieComponent
               dieType={20}
-              onAdd={() => {
+              onDieClick={() => {
                 handleAddDie(20);
+                console.log("added d20");
               }}
             />
             <DieComponent
               dieType={100}
-              onAdd={() => {
+              onDieClick={() => {
                 handleAddDie(100);
               }}
             />
           </div>
           <div className="column-two">
             <div className="display-dice-container">
-              {dice.map((die, index) => {
-                return (
-                  <DieComponent
-                    ref={(ref) => {
-                      dieRollRef.current[index] = ref;
-                    }}
-                    key={index}
-                    die={die}
-                    onRemove={() => {
-                      handleRemoveDie(index);
-                    }}
-                  />
-                );
-              })}
+              <DieComponent
+                onDieClick={(index) => {
+                  handleRemoveDie(index);
+                  console.log("removed Die");
+                }}
+              />
             </div>
           </div>
           <div className="col-span-1"></div>

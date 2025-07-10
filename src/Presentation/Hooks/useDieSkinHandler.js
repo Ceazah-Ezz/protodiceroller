@@ -2,7 +2,9 @@ import { useCallback, useState } from "react";
 import BaseDieSkin from "../../Assets/DieSkins/BaseSkin/BaseDieSkin";
 export function useDieSkinHandler() {
   const [dieSkin, setDieSkin] = useState(new BaseDieSkin());
-  const changeDieSkin = () => {};
+  const changeDieSkin = (newDieSkin) => {
+    setDieSkin(newDieSkin);
+  };
   const getDieAssets = useCallback(
     (dieType) => {
       switch (dieType) {
@@ -24,10 +26,16 @@ export function useDieSkinHandler() {
     },
     [dieSkin]
   );
+
+  const getAllDieAssets = useCallback(() => {
+    return dieSkin;
+  }, [dieSkin]);
+
   return {
     dieSkin,
     setDieSkin,
     changeDieSkin,
     getDieAssets,
+    getAllDieAssets,
   };
 }
