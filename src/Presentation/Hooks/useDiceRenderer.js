@@ -45,11 +45,11 @@ export function useDiceRenderer() {
     });
 
     let frame = 0;
-    const maxFrames = 20;
+    const maxFrames = 25;
     let lastUpdateTime = 0;
 
     function getFrameDuration(frame) {
-      return 20 + frame * 10;
+      return 30 + frame * 10;
     }
 
     function step(timestamp) {
