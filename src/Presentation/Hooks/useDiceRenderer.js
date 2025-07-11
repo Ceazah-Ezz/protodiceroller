@@ -35,6 +35,7 @@ export function useDiceRenderer() {
   const triggerDiceRolls = () => {
     if (isRolling) return;
     setIsRolling(true);
+
     const diceWithSkins = dice.map((die) => {
       let dieType = die.getDieType();
       let dieAssets = getDieAssets(dieType);
@@ -43,34 +44,50 @@ export function useDiceRenderer() {
       return [dieType, faceImgs, cornerImgs];
     });
 
-    let counter = 0;
-    const rollInterval = setInterval(() => {
-      const rollingDieFrames = diceWithSkins.map(
-        ([dieType, faceImgs, cornerImgs]) => {
-          const randomCorner = () =>
-            cornerImgs[Math.floor(Math.random() * cornerImgs.length)];
-          const randomFace = () => {
-            const rollIndex = Math.floor(Math.random() * dieType);
-            return dieType === 100
-              ? faceImgs[rollIndex % 10]
-              : faceImgs[rollIndex];
-          };
-          let rolledDieFrame =
-            counter % 2 === 0 ? randomCorner() : randomFace();
-          return [rolledDieFrame, dieType];
-        }
-      );
-      setCurrentDieFaces([...rollingDieFrames]);
-      counter++;
-      console.log(counter);
-      console.log(rollingDieFrames);
-      if (counter >= 16) {
-        clearInterval(rollInterval);
+    let frame = 0;
+    const maxFrames = 20;
+    let lastUpdateTime = 0;
+
+    function getFrameDuration(frame) {
+      return 20 + frame * 10;
+    }
+
+    function step(timestamp) {
+      if (!lastUpdateTime) lastUpdateTime = timestamp;
+      const elapsed = timestamp - lastUpdateTime;
+      const duration = getFrameDuration(frame);
+
+      if (elapsed >= duration) {
+        const rollingDieFrames = diceWithSkins.map(
+          ([dieType, faceImgs, cornerImgs]) => {
+            const randomCorner = () =>
+              cornerImgs[Math.floor(Math.random() * cornerImgs.length)];
+            const randomFace = () => {
+              const rollIndex = Math.floor(Math.random() * dieType);
+              return dieType === 100
+                ? faceImgs[rollIndex % 10]
+                : faceImgs[rollIndex];
+            };
+            const rolledDieFrame =
+              frame % 2 === 0 ? randomCorner() : randomFace();
+            return [rolledDieFrame, dieType];
+          }
+        );
+
+        setCurrentDieFaces([...rollingDieFrames]);
+        frame++;
+        lastUpdateTime = timestamp;
+      }
+      if (frame < maxFrames) {
+        requestAnimationFrame(step);
+      } else {
         handleRollDice();
         updateDieFaces();
         setIsRolling(false);
       }
-    }, 200);
+    }
+
+    requestAnimationFrame(step);
   };
 
   return {

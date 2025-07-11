@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import { useDiceRenderer } from "../Hooks/useDiceRenderer";
 import { useDieSkinHandler } from "../Hooks/useDieSkinHandler";
 
 export default function DieComponent({
