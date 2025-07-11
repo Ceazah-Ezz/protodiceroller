@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
 import BaseDieSkin from "../../Assets/DieSkins/BaseSkin/BaseDieSkin";
+
 export function useDieSkinHandler() {
   const [dieSkin, setDieSkin] = useState(new BaseDieSkin());
   const changeDieSkin = (newDieSkin) => {

@@ -2,15 +2,18 @@ import { useMemo } from "react";
 import { useDiceRenderer } from "../Hooks/useDiceRenderer";
 import { useDieSkinHandler } from "../Hooks/useDieSkinHandler";
 
-export default function DieComponent({ dieType, onDieClick = () => {} }) {
-  const { currentDieFaces, updateDieFaces } = useDiceRenderer();
+export default function DieComponent({
+  dieType,
+  currentDieFaces,
+  onDieClick = () => {},
+}) {
   const { getDieAssets } = useDieSkinHandler();
   const isStatic = !!dieType;
   const staticDieFace = useMemo(() => {
     const dieAssets = getDieAssets(dieType);
     return dieAssets[0];
   }, [getDieAssets, dieType]);
-  console.log(currentDieFaces);
+
   if (isStatic) {
     return (
       <img
@@ -19,13 +22,12 @@ export default function DieComponent({ dieType, onDieClick = () => {} }) {
         alt={`D${dieType}`}
         onClick={() => {
           onDieClick();
-          updateDieFaces();
         }}
       />
     );
   } else {
     return (
-      <div>
+      <div className="display-dice-container">
         {currentDieFaces.map(([dieFace, dieType], index) => {
           return (
             <img
@@ -35,7 +37,6 @@ export default function DieComponent({ dieType, onDieClick = () => {} }) {
               alt={`D${dieType}`}
               onClick={() => {
                 onDieClick(index);
-                updateDieFaces();
               }}
             />
           );

@@ -1,27 +1,21 @@
-import { useContext, useRef } from "react";
+import { useContext } from "react";
 import { DieContext } from "../Context/DieContext";
-import { DieSkinContext } from "../Context/DieSkinContext";
 import { ThemeContext } from "../Context/ThemeContext";
 import DieComponent from "../Components/DieComponent";
-import playmat from "../../Assets/SpiritTray.png";
-import playmatrotated from "../../Assets/SpiritTrayRotated.png";
 import d20 from "../../Assets/d20.svg";
 import themes from "../Context/themes";
 import { useDiceRenderer } from "../Hooks/useDiceRenderer";
 
 function Playmat() {
-  const { handleAddDie, handleRemoveDie, handleRollDice } =
-    useContext(DieContext);
-  const dieRollRef = useRef([]);
+  const { handleAddDie, handleRemoveDie } = useContext(DieContext);
+  const { triggerDiceRolls, currentDieFaces, updateDieFaces } =
+    useDiceRenderer();
 
   const { themeName, setThemeName } = useContext(ThemeContext);
   const theme = themes[themeName];
 
-  const rollAllDice = () => {
-    dieRollRef.current.forEach((ref) => {
-      ref?.rollDie();
-    });
-    handleRollDice();
+  const handleRollClick = () => {
+    triggerDiceRolls();
   };
 
   return (
@@ -56,7 +50,12 @@ function Playmat() {
                 </button>
               </div>
             </div>
-            <button className="roll-button" onClick={rollAllDice}>
+            <button
+              className="roll-button"
+              onClick={() => {
+                handleRollClick();
+              }}
+            >
               <img width={40} height={40} src={d20} alt="Roll Dice" />
               ROLL
             </button>
@@ -101,14 +100,13 @@ function Playmat() {
             />
           </div>
           <div className="column-two">
-            <div className="display-dice-container">
-              <DieComponent
-                onDieClick={(index) => {
-                  handleRemoveDie(index);
-                  console.log("removed Die");
-                }}
-              />
-            </div>
+            <DieComponent
+              currentDieFaces={currentDieFaces}
+              onDieClick={(index) => {
+                handleRemoveDie(index);
+                updateDieFaces();
+              }}
+            />
           </div>
           <div className="col-span-1"></div>
           <div className="column-three">

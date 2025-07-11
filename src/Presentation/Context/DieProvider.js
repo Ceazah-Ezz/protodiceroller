@@ -6,6 +6,8 @@ import "../Pages/Revamped.css";
 export default function DieProvider({ children }) {
   const {
     dice,
+    isRolling,
+    setIsRolling,
     handleAddDie,
     handleRemoveDie,
     handleRollDice,
@@ -15,6 +17,8 @@ export default function DieProvider({ children }) {
     <DieContext.Provider
       value={{
         dice,
+        isRolling,
+        setIsRolling,
         handleAddDie,
         handleRemoveDie,
         handleRollDice,
