@@ -7,7 +7,7 @@ import themes from "../Context/themes";
 import { useDiceRenderer } from "../Hooks/useDiceRenderer";
 
 function Playmat() {
-  const { handleAddDie, handleRemoveDie } = useContext(DieContext);
+  const { handleAddDie, handleRemoveDie, isRolling } = useContext(DieContext);
   const { triggerDiceRolls, currentDieFaces, updateDieFaces } =
     useDiceRenderer();
 
@@ -16,6 +16,9 @@ function Playmat() {
 
   const handleRollClick = () => {
     triggerDiceRolls();
+  };
+  const handleAddDieClick = (dieType) => {
+    !isRolling && handleAddDie(dieType);
   };
 
   return (
@@ -64,38 +67,37 @@ function Playmat() {
             <DieComponent
               dieType={4}
               onDieClick={() => {
-                handleAddDie(4);
+                handleAddDieClick(4);
               }}
             />
             <DieComponent
               dieType={6}
               onDieClick={() => {
-                handleAddDie(6);
+                handleAddDieClick(6);
               }}
             />
             <DieComponent
               dieType={8}
               onDieClick={() => {
-                handleAddDie(8);
+                handleAddDieClick(8);
               }}
             />
             <DieComponent
               dieType={12}
               onDieClick={() => {
-                handleAddDie(12);
+                handleAddDieClick(12);
               }}
             />
             <DieComponent
               dieType={20}
               onDieClick={() => {
-                handleAddDie(20);
-                console.log("added d20");
+                handleAddDieClick(20);
               }}
             />
             <DieComponent
               dieType={100}
               onDieClick={() => {
-                handleAddDie(100);
+                handleAddDieClick(100);
               }}
             />
           </div>
